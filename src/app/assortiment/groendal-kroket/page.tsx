@@ -71,7 +71,7 @@ export default function GroendalKroket() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute left-1/2 top-[250px] w-[900px] max-w-[96vw] -translate-x-1/2 opacity-90"
+          className="pointer-events-none absolute left-1/2 top-[190px] w-[900px] max-w-[96vw] -translate-x-1/2 opacity-90"
         />
 
         {/* title */}
@@ -156,16 +156,6 @@ export default function GroendalKroket() {
           className="pointer-events-none absolute right-[calc(50%-540px)] top-[530px] z-[10] hidden w-[380px] drop-shadow-xl md:block"
         />
 
-        {/* cheese platter decoration, bottom (big) */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset("/assets/groendal-cheese2.png")}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-          className="pointer-events-none absolute left-[calc(50%-560px)] top-[680px] z-[11] hidden w-[450px] drop-shadow-xl md:block"
-        />
 
         {/* sparkles */}
         <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[9] flex justify-center">
