@@ -824,6 +824,16 @@ export default function Home() {
           />
         </div>
 
+        {/* premium-quality badge, to the left of the product */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/assets/garnaal-badge.png")}
+          alt="Premium kwaliteit — gemaakt in België"
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute left-[calc(50%-340px)] top-[500px] z-[10] hidden w-[150px] -rotate-6 drop-shadow-xl md:block"
+        />
+
         {/* decorative sparkles scattered around the product */}
         <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[9] flex justify-center">
           <div className="relative h-[470px] w-[740px] max-w-[94vw]">
@@ -842,9 +852,9 @@ export default function Home() {
             Bekijk product
             <ArrowCircle bg="var(--cream)" fg="#0d3b6f" />
           </button>
-          <button className="flex items-center gap-3 rounded-[5px] bg-[#0d3b6f] px-6 py-3.5 text-[15px] font-bold text-[var(--cream)] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[5px] border-2 border-[#0d3b6f] px-6 py-3 text-[15px] font-bold text-[#0d3b6f] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0d3b6f] hover:text-[var(--cream)] active:translate-y-0">
             Vind product
-            <ArrowCircle bg="var(--cream)" fg="#0d3b6f" />
+            <ArrowCircle bg="#0d3b6f" />
           </button>
         </div>
 
@@ -926,9 +936,9 @@ export default function Home() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={asset("/assets/logo-kroketco-blue.png")}
-              alt="Kroketco Belgium"
-              className="h-[46px] w-auto md:h-[58px]"
+              src={asset("/assets/logo-garnaal.png")}
+              alt="Kroketco Belgium — Garnaal Kroket"
+              className="h-[48px] w-auto md:h-[62px]"
             />
             <span
               className="text-[24px] text-[var(--cream)] md:text-[30px]"
