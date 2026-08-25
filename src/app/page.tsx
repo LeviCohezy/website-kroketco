@@ -763,7 +763,7 @@ const HERO_SLIDES: Slide[] = [
     badgeClass:
       "pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
     badgeSlotClass:
-      "pointer-events-none absolute left-[calc(50%-370px)] top-[102px] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
+      "pointer-events-none absolute left-[calc(50%-370px)] top-[102px] hidden w-[190px] drop-shadow-xl md:block",
     extra: [],
     headline: "#0d3b6f",
     subColor: "#1257a0",
@@ -790,7 +790,7 @@ const HERO_SLIDES: Slide[] = [
     badgeClass:
       "pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
     badgeSlotClass:
-      "pointer-events-none absolute left-[calc(50%-370px)] top-[102px] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
+      "pointer-events-none absolute left-[calc(50%-370px)] top-[102px] hidden w-[190px] drop-shadow-xl md:block",
     extra: [],
     headline: "#fff3e2",
     subColor: "#e7b64f",
@@ -817,7 +817,7 @@ const HERO_SLIDES: Slide[] = [
     badgeClass:
       "pointer-events-none absolute left-[calc(50%-430px)] top-[430px] z-[10] hidden w-[260px] -rotate-6 drop-shadow-xl md:block",
     badgeSlotClass:
-      "pointer-events-none absolute left-[calc(50%-430px)] top-[46px] hidden w-[260px] -rotate-6 drop-shadow-xl md:block",
+      "pointer-events-none absolute left-[calc(50%-430px)] top-[46px] hidden w-[260px] drop-shadow-xl md:block",
     extra: [
       {
         src: asset("/assets/groendal-cheese.png"),
@@ -930,6 +930,7 @@ export default function Home() {
   const N = HERO_SLIDES.length;
   const [k, setK] = useState(1); // belt index; real slides live at 1..N
   const [trans, setTrans] = useState(true);
+  const [sliding, setSliding] = useState(false);
   const logical = (k - 1) % N;
   const activeSlide = HERO_SLIDES[logical];
   // remember the previous slide so the background can wipe in with a circle
@@ -939,9 +940,19 @@ export default function Home() {
     prevLogicalRef.current = logical;
   }, [logical]);
   useEffect(() => {
-    const id = setInterval(() => setK((v) => v + 1), 4600);
+    const id = setInterval(() => {
+      setSliding(true);
+      setK((v) => v + 1);
+    }, 4600);
     return () => clearInterval(id);
   }, []);
+  // clear the leaning/sliding state once the product has arrived
+  useEffect(() => {
+    if (sliding) {
+      const t = setTimeout(() => setSliding(false), 480);
+      return () => clearTimeout(t);
+    }
+  }, [sliding]);
   // when the trailing clone is reached, jump back to the real first slide
   useEffect(() => {
     if (k === N + 1) {
@@ -1031,18 +1042,27 @@ export default function Home() {
                   className="relative flex shrink-0 justify-center"
                   style={{ width: HERO_SLOT }}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={s.product}
-                    alt={i === k ? s.productAlt : ""}
-                    aria-hidden={i === k ? undefined : true}
-                    className="float h-max w-[min(64vw,462px)] drop-shadow-2xl"
+                  {/* leans into the direction of travel, straightens on arrival */}
+                  <div
                     style={{
-                      opacity: i === k ? 1 : 0.4,
-                      transition: "opacity 600ms ease",
+                      transform: `rotate(${sliding ? -4 : 0}deg)`,
+                      transformOrigin: "50% 85%",
+                      transition: "transform 380ms ease",
                     }}
-                  />
-                  {/* per-product premium badge, slides with the belt */}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={s.product}
+                      alt={i === k ? s.productAlt : ""}
+                      aria-hidden={i === k ? undefined : true}
+                      className="float h-max w-[min(64vw,462px)] drop-shadow-2xl"
+                      style={{
+                        opacity: i === k ? 1 : 0.4,
+                        transition: "opacity 600ms ease",
+                      }}
+                    />
+                  </div>
+                  {/* per-product premium badge — grows in only once centered */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={s.badge}
@@ -1050,8 +1070,11 @@ export default function Home() {
                     aria-hidden="true"
                     className={s.badgeSlotClass}
                     style={{
-                      opacity: i === k ? 1 : 0.4,
-                      transition: "opacity 600ms ease",
+                      opacity: i === k && !sliding ? 1 : 0,
+                      transform: `rotate(-6deg) scale(${i === k && !sliding ? 1 : 0})`,
+                      transformOrigin: "center",
+                      transition:
+                        "transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 300ms ease",
                     }}
                   />
                 </div>
@@ -1131,6 +1154,7 @@ export default function Home() {
             <button
               key={i}
               onClick={() => {
+                setSliding(true);
                 setTrans(true);
                 setK(i + 1);
               }}
