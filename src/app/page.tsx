@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // GitHub Pages serves this project from a subpath (e.g. "/website-kroketco").
 // next/font, next/image and next/link get the basePath automatically, but raw
@@ -734,6 +734,7 @@ type Slide = {
   logoAlt: string;
   badge: string;
   badgeClass: string;
+  badgeSlotClass: string;
   extra: { src: string; className: string }[];
   headline: string;
   subColor: string;
@@ -761,6 +762,8 @@ const HERO_SLIDES: Slide[] = [
     badge: asset("/assets/garnaal-badge.png"),
     badgeClass:
       "pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
+    badgeSlotClass:
+      "pointer-events-none absolute left-[calc(50%-370px)] top-[102px] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
     extra: [],
     headline: "#0d3b6f",
     subColor: "#1257a0",
@@ -786,6 +789,8 @@ const HERO_SLIDES: Slide[] = [
     badge: asset("/assets/amandel-badge.png"),
     badgeClass:
       "pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
+    badgeSlotClass:
+      "pointer-events-none absolute left-[calc(50%-370px)] top-[102px] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
     extra: [],
     headline: "#fff3e2",
     subColor: "#e7b64f",
@@ -811,6 +816,8 @@ const HERO_SLIDES: Slide[] = [
     badge: asset("/assets/groendal-badge.png"),
     badgeClass:
       "pointer-events-none absolute left-[calc(50%-430px)] top-[430px] z-[10] hidden w-[260px] -rotate-6 drop-shadow-xl md:block",
+    badgeSlotClass:
+      "pointer-events-none absolute left-[calc(50%-430px)] top-[46px] hidden w-[260px] -rotate-6 drop-shadow-xl md:block",
     extra: [
       {
         src: asset("/assets/groendal-cheese.png"),
@@ -925,6 +932,12 @@ export default function Home() {
   const [trans, setTrans] = useState(true);
   const logical = (k - 1) % N;
   const activeSlide = HERO_SLIDES[logical];
+  // remember the previous slide so the background can wipe in with a circle
+  const prevLogicalRef = useRef(logical);
+  const prevLogical = prevLogicalRef.current;
+  useEffect(() => {
+    prevLogicalRef.current = logical;
+  }, [logical]);
   useEffect(() => {
     const id = setInterval(() => setK((v) => v + 1), 4600);
     return () => clearInterval(id);
@@ -959,24 +972,34 @@ export default function Home() {
     <div className="relative bg-white">
       {/* ===== HERO SLIDER (a bit taller than the viewport) ===== */}
       <section className="relative h-[106vh] w-full overflow-hidden">
-        {/* background colour — transitions per slide */}
+        {/* background — circular colour wipe (base = previous, reveal = current) */}
         <div
           className="absolute inset-0 z-0"
-          style={{ background: activeSlide.bg, transition: "background-color 800ms ease" }}
-        />
-
-        {/* decorative flowers — crossfade with the colour */}
-        {HERO_SLIDES.map((s, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
+          style={{ background: HERO_SLIDES[prevLogical].bg }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            key={i}
-            src={s.flower}
+            src={HERO_SLIDES[prevLogical].flower}
             alt=""
             aria-hidden="true"
-            className={`${s.flowerClass} z-0 transition-opacity duration-700`}
-            style={{ opacity: i === logical ? HERO_FLOWER_OP[i] : 0 }}
+            className={HERO_SLIDES[prevLogical].flowerClass}
+            style={{ opacity: HERO_FLOWER_OP[prevLogical] }}
           />
-        ))}
+        </div>
+        <div
+          key={logical}
+          className="hero-reveal absolute inset-0 z-[1]"
+          style={{ background: activeSlide.bg }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={activeSlide.flower}
+            alt=""
+            aria-hidden="true"
+            className={activeSlide.flowerClass}
+            style={{ opacity: HERO_FLOWER_OP[logical] }}
+          />
+        </div>
 
         {/* sparkles (static) */}
         <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[9] flex justify-center">
@@ -1005,7 +1028,7 @@ export default function Home() {
               {HERO_BELT.map((s, i) => (
                 <div
                   key={i}
-                  className="flex shrink-0 justify-center"
+                  className="relative flex shrink-0 justify-center"
                   style={{ width: HERO_SLOT }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1014,6 +1037,18 @@ export default function Home() {
                     alt={i === k ? s.productAlt : ""}
                     aria-hidden={i === k ? undefined : true}
                     className="float h-max w-[min(64vw,462px)] drop-shadow-2xl"
+                    style={{
+                      opacity: i === k ? 1 : 0.4,
+                      transition: "opacity 600ms ease",
+                    }}
+                  />
+                  {/* per-product premium badge, slides with the belt */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={s.badge}
+                    alt=""
+                    aria-hidden="true"
+                    className={s.badgeSlotClass}
                     style={{
                       opacity: i === k ? 1 : 0.4,
                       transition: "opacity 600ms ease",
