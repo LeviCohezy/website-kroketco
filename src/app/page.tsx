@@ -80,6 +80,50 @@ const SOCIAL = [
   { label: "TikTok", href: "#" },
 ];
 
+type NewsItem = {
+  img: string;
+  date: string;
+  title: string;
+  excerpt: string;
+};
+const NEWS_TABS = [
+  { label: "Laatste nieuws", color: "var(--kc-golden)" },
+  { label: "Bedrijfsnieuws", color: "var(--kc-blue)" },
+  { label: "Productnieuws", color: "var(--kc-lavender)" },
+];
+const NEWS: NewsItem[] = [
+  {
+    img: asset("/assets/UGC/ugc1.png"),
+    date: "5 augustus 2025",
+    title: "Ons kleine verhaal wint groot op de marketing awards",
+    excerpt:
+      "De “Groeien met jou”-campagne, over het belang van familie en verbinding, werd bekroond met zilver en brons.",
+  },
+  {
+    img: asset("/assets/UGC/ugc2.png"),
+    date: "22 juli 2025",
+    title: "Nieuwe vegan kroket verovert de vriesvakken",
+    excerpt:
+      "Onze plantaardige kroket is nu verkrijgbaar bij winkels door heel België en Nederland.",
+  },
+  {
+    img: asset("/assets/UGC/ugc7.png"),
+    date: "10 juni 2025",
+    title: "Kroketco opent een tweede ambachtelijke keuken",
+    excerpt:
+      "Meer ruimte, dezelfde zorg — zodat we nog meer families vers laten genieten.",
+  },
+];
+
+// Category words for the follow-band marquee.
+const FOLLOW_CATS = [
+  { label: "Kaas", color: "var(--kc-blue)" },
+  { label: "Vega", color: "var(--kc-lime)" },
+  { label: "Rollen", color: "var(--kc-orange)" },
+  { label: "Snacks", color: "var(--maroon)" },
+  { label: "Purée", color: "var(--kc-golden)" },
+];
+
 type AttrCat = {
   word: string;
   left: { img: string; shape: string };
@@ -447,6 +491,212 @@ function OrganicBg({
   );
 }
 
+function SocialGlyph({ name }: { name: string }) {
+  if (name === "Facebook")
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M14 8.5V7c0-.8.2-1.2 1.3-1.2H17V3h-2.5C11.9 3 11 4.4 11 6.6v1.9H9V11h2v9h3v-9h2.2l.3-2.5H14z" />
+      </svg>
+    );
+  if (name === "TikTok")
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M15.6 3c.3 2 1.6 3.6 3.6 3.9v2.6c-1.3 0-2.5-.4-3.6-1.1v5.9c0 3-2.4 5.4-5.4 5.4s-5.4-2.4-5.4-5.4c0-2.8 2.1-5.1 4.8-5.4v2.7c-1.2.3-2.2 1.4-2.2 2.7 0 1.6 1.3 2.9 2.9 2.9s2.9-1.3 2.9-2.9V3h2.4z" />
+      </svg>
+    );
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
+      <circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" />
+    </svg>
+  );
+}
+
+function ArrowSquare() {
+  return (
+    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[8px] bg-white">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path
+          d="M3 11 11 3M5 3h6v6"
+          stroke="var(--kc-orange)"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
+function RecipeCard({ r }: { r: Recipe }) {
+  return (
+    <article
+      className="flex w-[300px] shrink-0 flex-col rounded-[26px] p-4 transition-transform duration-300 hover:-translate-y-1"
+      style={{ background: r.bg }}
+    >
+      <div className="relative overflow-hidden rounded-[18px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={r.img}
+          alt={r.title}
+          loading="lazy"
+          decoding="async"
+          className="h-[210px] w-full object-cover"
+        />
+        <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[13px] font-bold text-[var(--kc-green)] shadow-sm">
+          {r.time}
+        </span>
+      </div>
+      <div className="mt-4 flex items-center gap-1.5 text-[14px] font-semibold text-[var(--kc-green)]">
+        <span className="grid h-4 w-4 place-items-center rounded-full bg-[var(--kc-green)]">
+          <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+            <path
+              d="M2.5 6.3 5 8.5 9.5 3.5"
+              stroke="#fff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+        Vegetarisch
+      </div>
+      <h3
+        className="mt-2 min-h-[52px] text-[22px] font-extrabold uppercase leading-[0.95] text-[var(--kc-green)]"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        {r.title}
+      </h3>
+      <button className="mt-3 flex w-max items-center gap-2 rounded-[12px] bg-white px-4 py-2.5 text-[14px] font-bold text-[var(--kc-green)] transition-transform duration-200 hover:-translate-y-0.5">
+        Bekijk recept
+        <ArrowCircle />
+      </button>
+    </article>
+  );
+}
+
+function StarburstBadge({
+  lines,
+  bg = "var(--kc-golden)",
+  color = "#3a2a12",
+  size = 120,
+}: {
+  lines: string[];
+  bg?: string;
+  color?: string;
+  size?: number;
+}) {
+  return (
+    <div
+      className="relative grid shrink-0 place-items-center"
+      style={{ width: size, height: size }}
+    >
+      <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
+        <g fill={bg}>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <rect
+              key={i}
+              x="46"
+              y="1"
+              width="8"
+              height="26"
+              rx="3"
+              transform={`rotate(${(i * 360) / 12} 50 50)`}
+            />
+          ))}
+          <circle cx="50" cy="50" r="36" />
+        </g>
+      </svg>
+      <div
+        className="relative text-center font-extrabold uppercase leading-[1.08]"
+        style={{ color, fontSize: size * 0.115 }}
+      >
+        {lines.map((l, i) => (
+          <div key={i}>{l}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RoundStamp({
+  id,
+  topText,
+  bottomText,
+  center,
+  bg = "var(--maroon)",
+  fg = "#fff3e2",
+  size = 120,
+}: {
+  id: string;
+  topText: string;
+  bottomText: string;
+  center?: string;
+  bg?: string;
+  fg?: string;
+  size?: number;
+}) {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      className="shrink-0"
+      style={{ width: size, height: size }}
+    >
+      <defs>
+        <path id={`${id}-t`} d="M 50 50 m -38 0 a 38 38 0 1 1 76 0" fill="none" />
+        <path id={`${id}-b`} d="M 50 50 m -32 0 a 32 32 0 1 0 64 0" fill="none" />
+      </defs>
+      <circle cx="50" cy="50" r="49" fill={bg} />
+      <circle
+        cx="50"
+        cy="50"
+        r="43"
+        fill="none"
+        stroke={fg}
+        strokeWidth="0.8"
+        opacity="0.5"
+      />
+      <text
+        fontSize="8"
+        fontWeight="700"
+        letterSpacing="1.2"
+        fill={fg}
+        fontFamily="var(--font-sans)"
+      >
+        <textPath href={`#${id}-t`} startOffset="12%">
+          {topText}
+        </textPath>
+      </text>
+      <text
+        fontSize="7.4"
+        fontWeight="700"
+        letterSpacing="1"
+        fill={fg}
+        fontFamily="var(--font-sans)"
+      >
+        <textPath href={`#${id}-b`} startOffset="14%">
+          {bottomText}
+        </textPath>
+      </text>
+      {center && (
+        <text
+          x="50"
+          y="58"
+          textAnchor="middle"
+          fontSize="26"
+          fontWeight="900"
+          fontStyle="italic"
+          fill={fg}
+          fontFamily="var(--font-serif)"
+        >
+          {center}
+        </text>
+      )}
+    </svg>
+  );
+}
+
 const NAV_LINKS = ["Recepten", "Over ons", "Nieuws"];
 
 type Badge = {
@@ -603,9 +853,7 @@ export default function Home() {
   const [hoverP, setHoverP] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [attrActive, setAttrActive] = useState(2);
-  const [recActive, setRecActive] = useState(2);
-  const stepRecipes = (dir: number) =>
-    setRecActive((a) => Math.min(RECIPES.length - 1, Math.max(0, a + dir)));
+  const [newsTab, setNewsTab] = useState(0);
   const stepProducts = (dir: number) =>
     setPActive((a) => Math.min(PRODUCTS.length - 1, Math.max(0, a + dir)));
   return (
@@ -1062,31 +1310,326 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== UGC SECTION (no background) ===== */}
-      <section className="mx-4 py-4 pb-20 md:mx-8">
-        <div className="mx-auto max-w-[1400px]">
-          <div className="flex items-end justify-between">
-            <h2
-              className="text-[32px] font-extrabold uppercase leading-[0.9] text-[var(--kc-green)] md:text-[42px]"
-              style={{ fontFamily: "var(--font-display)" }}
+      {/* ===== ABOUT: rooted in tradition, growing with community ===== */}
+      <section className="relative overflow-hidden bg-white px-4 py-16 md:px-8 md:py-24">
+        <div className="relative mx-auto max-w-[1300px]">
+          <h2
+            className="relative z-20 font-extrabold uppercase leading-[0.85] text-[var(--kc-green)]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(40px, 8vw, 116px)",
+            }}
+          >
+            Geworteld in
+            <br />
+            traditie,
+          </h2>
+
+          {/* middle composition: product + mission, overlapping the headlines on desktop */}
+          <div className="relative z-10 flex flex-col items-center gap-10 md:-my-12 md:flex-row md:justify-center md:gap-14">
+            <div className="relative grid h-[300px] w-[340px] shrink-0 place-items-center md:h-[420px] md:w-[480px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset("/assets/shapes/shape1.png")}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                className="spin-slow absolute h-[280px] w-[280px] object-contain md:h-[400px] md:w-[400px]"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset("/assets/hero-product.png")}
+                alt="Kroketco kroketten, ambachtelijk gemaakt"
+                loading="lazy"
+                decoding="async"
+                className="float relative z-10 w-[280px] object-contain drop-shadow-2xl md:w-[380px]"
+              />
+              <div className="absolute -left-4 -top-2 h-[110px] w-[110px] md:-left-8 md:h-[150px] md:w-[150px]">
+                <MapleBadge />
+              </div>
+              <div className="absolute -bottom-1 right-2 h-[80px] w-[80px] md:right-0 md:h-[104px] md:w-[104px]">
+                <MadeWithBadge />
+              </div>
+            </div>
+
+            <div className="max-w-[380px] text-center md:text-left">
+              <p className="text-[17px] font-medium leading-relaxed text-[var(--kc-green)]">
+                We delen onze liefde voor ambachtelijke, verse kroketten met heel
+                België. Daarom vind je bij ons nooit iets in het vriesvak dat we
+                niet ook op onze eigen familietafel zouden zetten.
+              </p>
+              <button className="mt-6 inline-flex items-center gap-3 rounded-[8px] bg-[var(--kc-green)] px-6 py-3.5 text-[15px] font-bold text-white transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+                Lees meer
+                <ArrowCircle dark={false} />
+              </button>
+            </div>
+          </div>
+
+          <h2
+            className="relative z-20 text-right font-extrabold uppercase leading-[0.85] text-[var(--kc-green)]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(40px, 8vw, 116px)",
+            }}
+          >
+            Groeien met
+            <br />
+            de buurt
+          </h2>
+
+          <div className="pointer-events-none absolute -bottom-2 left-0 z-20 hidden md:block">
+            <StarburstBadge
+              lines={["Proef", "de", "kroket"]}
+              bg="var(--kc-orange)"
+              color="#fff"
+              size={128}
+            />
+          </div>
+          <div className="pointer-events-none absolute right-0 top-0 z-20 hidden md:block">
+            <RoundStamp
+              id="about-stamp"
+              topText="AMBACHTELIJK · VERS · BELGISCH"
+              bottomText="SINDS 1998 · KROKETCO"
+              size={120}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ===== RECIPES: from our kitchen to yours ===== */}
+      <section className="bg-white px-4 py-16 md:px-8">
+        <div className="mx-auto max-w-[1000px] text-center">
+          <p className="text-[14px] font-extrabold uppercase tracking-[0.25em] text-[var(--kc-green)]">
+            Recepten
+          </p>
+          <h2
+            className="mx-auto mt-4 font-extrabold uppercase leading-[0.9] text-[var(--kc-green)]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(36px, 6vw, 80px)",
+            }}
+          >
+            Van onze keuken,
+            <br />
+            voor jou
+          </h2>
+          <div className="mt-7 flex justify-center">
+            <button className="inline-flex items-center gap-3 rounded-[8px] bg-[var(--kc-green)] px-6 py-3.5 text-[15px] font-bold text-white transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+              Bekijk meer
+              <ArrowCircle dark={false} />
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-12 flex gap-6 overflow-x-auto px-1 pb-4 md:justify-center"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {RECIPES.map((r) => (
+            <RecipeCard key={r.title} r={r} />
+          ))}
+        </div>
+      </section>
+
+      {/* ===== NEWS: the world of Kroketco ===== */}
+      <section className="relative overflow-hidden bg-white px-4 py-16 md:px-8 md:py-20">
+        <div className="mx-auto max-w-[1000px] text-center">
+          <h2
+            className="font-extrabold uppercase leading-[0.9] text-[var(--kc-green)]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(36px, 6vw, 80px)",
+            }}
+          >
+            De wereld
+            <br />
+            van Kroketco
+          </h2>
+          <div className="mt-7 flex justify-center">
+            <button className="inline-flex items-center gap-3 rounded-[8px] bg-[var(--kc-green)] px-6 py-3.5 text-[15px] font-bold text-white transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+              Bekijk meer
+              <ArrowCircle dark={false} />
+            </button>
+          </div>
+        </div>
+
+        {/* mobile tab row */}
+        <div className="mx-auto mt-10 flex max-w-[1200px] gap-2 overflow-x-auto pb-2 md:hidden">
+          {NEWS_TABS.map((t, i) => (
+            <button
+              key={t.label}
+              onClick={() => setNewsTab(i)}
+              aria-pressed={i === newsTab}
+              className="shrink-0 rounded-full px-4 py-2 text-[13px] font-extrabold uppercase text-[var(--kc-green)] transition"
+              style={{ background: t.color, opacity: i === newsTab ? 1 : 0.5 }}
             >
-              Geliefd in
-              <br />
-              heel België
-            </h2>
-            <span className="pb-2 text-[16px] font-bold text-[var(--kc-orange)]">
-              #Kroketco
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="mx-auto mt-6 flex max-w-[1200px] items-stretch gap-3 md:mt-12">
+          {/* left accent bar (active category) */}
+          <div
+            className="hidden w-[52px] shrink-0 rounded-[16px] md:grid md:place-items-center"
+            style={{ background: NEWS_TABS[newsTab].color }}
+          >
+            <span
+              className="font-extrabold uppercase tracking-wide text-[var(--kc-green)]"
+              style={{
+                writingMode: "vertical-rl",
+                transform: "rotate(180deg)",
+                fontSize: 13,
+              }}
+            >
+              {NEWS_TABS[newsTab].label}
             </span>
           </div>
+
+          {/* featured card */}
           <div
-            className="mt-8 flex gap-4 overflow-x-auto pb-2"
+            className="flex-1 overflow-hidden rounded-[28px] p-3 transition-colors duration-300 md:p-4"
+            style={{ background: NEWS_TABS[newsTab].color }}
+          >
+            <div className="grid items-center gap-5 md:grid-cols-2 md:gap-8">
+              <div className="overflow-hidden rounded-[20px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={NEWS[newsTab].img}
+                  alt={NEWS[newsTab].title}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-[240px] w-full object-cover md:h-[360px]"
+                />
+              </div>
+              <div className="px-2 pb-3 md:px-4">
+                <p className="text-[14px] font-bold text-[var(--kc-green)]">
+                  {NEWS[newsTab].date}
+                </p>
+                <h3
+                  className="mt-3 font-extrabold uppercase leading-[0.95] text-[var(--kc-green)]"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(26px, 3vw, 44px)",
+                  }}
+                >
+                  {NEWS[newsTab].title}
+                </h3>
+                <p className="mt-4 text-[15px] font-medium leading-relaxed text-[var(--kc-green)]">
+                  {NEWS[newsTab].excerpt}
+                </p>
+                <button className="mt-6 inline-flex items-center gap-2.5 rounded-[8px] bg-white px-5 py-3 text-[14px] font-bold text-[var(--kc-green)] transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                  Lees meer
+                  <ArrowCircle />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* right vertical tabs */}
+          <div className="hidden shrink-0 flex-col gap-2 md:flex">
+            {NEWS_TABS.map((t, i) => (
+              <button
+                key={t.label}
+                onClick={() => setNewsTab(i)}
+                aria-pressed={i === newsTab}
+                className="grid flex-1 place-items-center rounded-[16px] px-2 transition-all duration-200"
+                style={{
+                  background: t.color,
+                  width: i === newsTab ? 56 : 46,
+                  opacity: i === newsTab ? 1 : 0.75,
+                }}
+              >
+                <span
+                  className="font-extrabold uppercase tracking-wide text-[var(--kc-green)]"
+                  style={{
+                    writingMode: "vertical-rl",
+                    transform: "rotate(180deg)",
+                    fontSize: 13,
+                  }}
+                >
+                  {t.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FOLLOW: category marquee + Instagram grid ===== */}
+      <section aria-label="Volg Kroketco op sociale media">
+        {/* category marquee band */}
+        <div className="overflow-hidden bg-[var(--lavender)] py-4">
+          <div className="marquee-track">
+            {Array.from({ length: 2 }).map((_, k) => (
+              <span key={k} className="flex items-center">
+                {FOLLOW_CATS.concat(FOLLOW_CATS).map((c, j) => (
+                  <span key={j} className="flex items-center">
+                    <span className="px-4">
+                      <CatIcon color={c.color} />
+                    </span>
+                    <span
+                      className="text-[22px] font-extrabold uppercase text-black"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {c.label}
+                    </span>
+                  </span>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* orange block */}
+        <div className="relative overflow-hidden bg-[#f5500a] px-4 py-16 md:px-8 md:py-20">
+          <div className="relative z-10 text-center">
+            <span className="inline-block rounded-[10px] bg-black/15 px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-widest text-white">
+              Blijf op de hoogte
+            </span>
+            <h2
+              className="mx-auto mt-6 max-w-[1100px] font-extrabold uppercase leading-[0.9] text-white"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(38px, 7vw, 92px)",
+              }}
+            >
+              Volg @kroketco
+              <br />
+              voor meer
+            </h2>
+
+            <div className="mx-auto mt-9 grid max-w-[820px] gap-3 sm:grid-cols-3">
+              {SOCIAL.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  className="flex items-center justify-between gap-4 rounded-[12px] bg-black/15 px-5 py-4 text-[16px] font-bold text-white transition-transform duration-200 hover:-translate-y-0.5"
+                >
+                  <span className="flex items-center gap-3">
+                    <SocialGlyph name={s.label} />
+                    {s.label}
+                  </span>
+                  <ArrowSquare />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* instagram grid */}
+          <div
+            className="relative z-10 mt-12 flex gap-4 overflow-x-auto pb-2 md:justify-center"
             style={{ scrollbarWidth: "none" }}
           >
             {UGC_IMAGES.map((src, i) => (
               <div
                 key={i}
-                className="group relative h-[330px] w-[250px] shrink-0 overflow-hidden rounded-[20px] shadow-md transition-shadow duration-300 hover:shadow-xl"
+                className="group relative h-[320px] w-[240px] shrink-0 overflow-hidden rounded-[18px] shadow-lg"
               >
+                <span className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-[8px] bg-black/70 px-2.5 py-1 text-[12px] font-bold text-white">
+                  <SocialGlyph name="Instagram" />
+                  Instagram
+                </span>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
@@ -1097,6 +1640,20 @@ export default function Home() {
                 />
               </div>
             ))}
+          </div>
+
+          {/* decorative badges */}
+          <div className="pointer-events-none absolute -left-4 bottom-6 z-20 hidden lg:block">
+            <StarburstBadge lines={["Sinds", "1998"]} size={116} />
+          </div>
+          <div className="pointer-events-none absolute -right-3 bottom-8 z-20 hidden lg:block">
+            <RoundStamp
+              id="follow-stamp"
+              topText="NIEUW & VERBETERD"
+              bottomText="KROKETCO · KROKETCO"
+              center="Kc"
+              size={128}
+            />
           </div>
         </div>
       </section>
