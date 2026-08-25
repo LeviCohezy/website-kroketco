@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 
 // GitHub Pages serves this project from a subpath (e.g. "/website-kroketco").
 // next/font, next/image and next/link get the basePath automatically, but raw
@@ -909,22 +909,45 @@ function HeroContent({ s }: { s: Slide }) {
   );
 }
 
+// Product belt: a leading clone of the last slide (left peek) and a trailing
+// clone of the first (right peek) make the loop seamless in both directions.
+const HERO_SLOT = 760;
+const HERO_FLOWER_OP = [0.45, 0.45, 0.9];
+const HERO_BELT = [
+  HERO_SLIDES[HERO_SLIDES.length - 1],
+  ...HERO_SLIDES,
+  HERO_SLIDES[0],
+];
+
 export default function Home() {
-  const [hero, dispatchHero] = useReducer(
-    (
-      st: { idx: number; prev: number; tick: number },
-      a: "next" | number,
-    ) =>
-      a === "next"
-        ? { idx: (st.idx + 1) % HERO_SLIDES.length, prev: st.idx, tick: st.tick + 1 }
-        : { idx: a, prev: st.idx, tick: st.tick + 1 },
-    { idx: 0, prev: 0, tick: 0 },
-  );
+  const N = HERO_SLIDES.length;
+  const [k, setK] = useState(1); // belt index; real slides live at 1..N
+  const [trans, setTrans] = useState(true);
+  const logical = (k - 1) % N;
+  const activeSlide = HERO_SLIDES[logical];
   useEffect(() => {
-    const id = setInterval(() => dispatchHero("next"), 5200);
+    const id = setInterval(() => setK((v) => v + 1), 4600);
     return () => clearInterval(id);
   }, []);
-  const activeSlide = HERO_SLIDES[hero.idx];
+  // when the trailing clone is reached, jump back to the real first slide
+  useEffect(() => {
+    if (k === N + 1) {
+      const t = setTimeout(() => {
+        setTrans(false);
+        setK(1);
+      }, 860);
+      return () => clearTimeout(t);
+    }
+  }, [k, N]);
+  // re-enable the transition on the next frame after a silent jump
+  useEffect(() => {
+    if (!trans) {
+      const r = requestAnimationFrame(() =>
+        requestAnimationFrame(() => setTrans(true)),
+      );
+      return () => cancelAnimationFrame(r);
+    }
+  }, [trans]);
   const [pActive, setPActive] = useState(2);
   const [hoverP, setHoverP] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -936,69 +959,135 @@ export default function Home() {
     <div className="relative bg-white">
       {/* ===== HERO SLIDER (a bit taller than the viewport) ===== */}
       <section className="relative h-[106vh] w-full overflow-hidden">
-        {/* base layer = previous slide (settled) */}
-        <div className="absolute inset-0 z-0">
-          <HeroContent s={HERO_SLIDES[hero.prev]} />
-        </div>
-        {/* reveal layer = current slide, unveiled by a growing circle */}
-        <div key={hero.tick} className="hero-reveal absolute inset-0 z-[1]">
-          <HeroContent s={activeSlide} />
+        {/* background colour — transitions per slide */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{ background: activeSlide.bg, transition: "background-color 800ms ease" }}
+        />
+
+        {/* decorative flowers — crossfade with the colour */}
+        {HERO_SLIDES.map((s, i) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={i}
+            src={s.flower}
+            alt=""
+            aria-hidden="true"
+            className={`${s.flowerClass} z-0 transition-opacity duration-700`}
+            style={{ opacity: i === logical ? HERO_FLOWER_OP[i] : 0 }}
+          />
+        ))}
+
+        {/* sparkles (static) */}
+        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[9] flex justify-center">
+          <div className="relative h-[470px] w-[740px] max-w-[94vw]">
+            <Sparkle color="#ffffff" size={34} className="left-[6%]! top-[4%]!" />
+            <Sparkle color="#ffffff" size={54} className="left-[-2%]! top-[46%]!" />
+            <Sparkle color="#ffffff" size={30} className="left-[11%]! top-[86%]!" />
+            <Sparkle color="#ffffff" size={46} className="right-[7%]! top-[10%]!" />
+            <Sparkle color="#ffffff" size={32} className="right-[-1%]! top-[44%]!" />
+            <Sparkle color="#ffffff" size={38} className="right-[12%]! top-[82%]!" />
+          </div>
         </div>
 
-        {/* package belt overlay — slides sideways on switch */}
-        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[2] flex justify-center">
-          <div className="relative flex w-[min(64vw,462px)] justify-center">
-            {hero.prev !== hero.idx && (
-              <div
-                key={`out-${hero.tick}`}
-                className="hero-slide-out absolute inset-0 flex justify-center"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={HERO_SLIDES[hero.prev].product}
-                  alt=""
-                  aria-hidden="true"
-                  className="float h-max w-full drop-shadow-2xl"
-                />
-              </div>
-            )}
+        {/* product belt — previous on the left, next on the right; only this slides */}
+        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[8] flex justify-center">
+          <div className="relative" style={{ width: HERO_SLOT }}>
             <div
-              key={`in-${hero.tick}`}
-              className="hero-slide-in flex w-full justify-center"
+              className="flex"
+              style={{
+                transform: `translateX(${-k * HERO_SLOT}px)`,
+                transition: trans
+                  ? "transform 820ms cubic-bezier(0.5, 0, 0.2, 1)"
+                  : "none",
+              }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={activeSlide.product}
-                alt={activeSlide.productAlt}
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                className="float h-max w-full drop-shadow-2xl"
-              />
+              {HERO_BELT.map((s, i) => (
+                <div
+                  key={i}
+                  className="flex shrink-0 justify-center"
+                  style={{ width: HERO_SLOT }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={s.product}
+                    alt={i === k ? s.productAlt : ""}
+                    aria-hidden={i === k ? undefined : true}
+                    className="float h-max w-[min(64vw,462px)] drop-shadow-2xl"
+                    style={{
+                      opacity: i === k ? 1 : 0.4,
+                      transition: "opacity 600ms ease",
+                    }}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* buttons overlay — stay put, fade per slide */}
-        <div className="absolute inset-x-0 bottom-[15vh] z-[3] flex justify-center gap-4">
-          <a
-            key={`b1-${hero.idx}`}
-            href={activeSlide.href}
-            className="hero-fade flex items-center gap-3 rounded-[5px] px-6 py-3.5 text-[15px] font-bold shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
-            style={{ background: activeSlide.solid.bg, color: activeSlide.solid.text }}
-          >
-            Bekijk product
-            <ArrowCircle bg={activeSlide.solid.arcBg} fg={activeSlide.solid.arcFg} />
-          </a>
-          <a
-            key={`b2-${hero.idx}`}
-            href={activeSlide.href}
-            className="hero-fade flex items-center gap-3 rounded-[5px] border-2 px-6 py-3 text-[15px] font-bold transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
-            style={{ borderColor: activeSlide.outline.color, color: activeSlide.outline.color }}
-          >
-            Vind product
-            <ArrowCircle bg={activeSlide.outline.arcBg} fg={activeSlide.outline.arcFg} />
-          </a>
+        {/* titles — crossfade in place */}
+        <div className="pointer-events-none absolute inset-0 z-[10]">
+          {HERO_SLIDES.map((s, i) => (
+            <div
+              key={i}
+              className="absolute inset-0 flex flex-col items-center pt-[140px] transition-opacity duration-700"
+              style={{ opacity: i === logical ? 1 : 0 }}
+            >
+              <h1
+                className="text-center font-extrabold uppercase leading-[0.84]"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(46px, 7.6vw, 118px)",
+                  color: s.headline,
+                }}
+              >
+                {s.title[0]}
+                <br />
+                {s.title[1]}
+              </h1>
+              <div className="mt-4 flex items-center gap-4 px-4">
+                <span className="h-px w-8 md:w-12" style={{ background: s.subLine, opacity: 0.6 }} />
+                <span
+                  className="whitespace-nowrap text-center text-[15px] font-semibold md:text-[19px]"
+                  style={{ color: s.subColor }}
+                >
+                  {s.subtitle}
+                </span>
+                <span className="h-px w-8 md:w-12" style={{ background: s.subLine, opacity: 0.6 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* buttons — stay put, crossfade per slide */}
+        <div className="absolute inset-x-0 bottom-[15vh] z-[20]">
+          {HERO_SLIDES.map((s, i) => (
+            <div
+              key={i}
+              className="absolute inset-x-0 flex justify-center gap-4 transition-opacity duration-500"
+              style={{
+                opacity: i === logical ? 1 : 0,
+                pointerEvents: i === logical ? "auto" : "none",
+              }}
+            >
+              <a
+                href={s.href}
+                className="flex items-center gap-3 rounded-[5px] px-6 py-3.5 text-[15px] font-bold shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+                style={{ background: s.solid.bg, color: s.solid.text }}
+              >
+                Bekijk product
+                <ArrowCircle bg={s.solid.arcBg} fg={s.solid.arcFg} />
+              </a>
+              <a
+                href={s.href}
+                className="flex items-center gap-3 rounded-[5px] border-2 px-6 py-3 text-[15px] font-bold transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                style={{ borderColor: s.outline.color, color: s.outline.color }}
+              >
+                Vind product
+                <ArrowCircle bg={s.outline.arcBg} fg={s.outline.arcFg} />
+              </a>
+            </div>
+          ))}
         </div>
 
         {/* slide dots */}
@@ -1006,14 +1095,17 @@ export default function Home() {
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
-              onClick={() => dispatchHero(i)}
+              onClick={() => {
+                setTrans(true);
+                setK(i + 1);
+              }}
               aria-label={`Ga naar slide ${i + 1}`}
-              aria-current={i === hero.idx ? "true" : undefined}
+              aria-current={i === logical ? "true" : undefined}
               className="h-2.5 rounded-full transition-all duration-300"
               style={{
-                width: i === hero.idx ? 28 : 10,
+                width: i === logical ? 28 : 10,
                 background: activeSlide.headline,
-                opacity: i === hero.idx ? 1 : 0.4,
+                opacity: i === logical ? 1 : 0.4,
               }}
             />
           ))}
@@ -1098,7 +1190,7 @@ export default function Home() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              key={hero.idx}
+              key={logical}
               src={activeSlide.logo}
               alt={activeSlide.logoAlt}
               className="hero-fade h-[48px] w-auto md:h-[62px]"
