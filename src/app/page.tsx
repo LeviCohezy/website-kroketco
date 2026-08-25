@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // GitHub Pages serves this project from a subpath (e.g. "/website-kroketco").
 // next/font, next/image and next/link get the basePath automatically, but raw
@@ -753,8 +753,8 @@ const SLIDES: SlideCfg[] = [
   },
 ];
 
-// Horizontal spacing between product centres on the carousel belt.
-const SLOT = 900;
+// Only the amandel slide is shown in the hero.
+const AMANDEL = SLIDES[0];
 
 function HeroSlide({ cfg }: { cfg: SlideCfg }) {
   return (
@@ -788,14 +788,6 @@ function HeroSlide({ cfg }: { cfg: SlideCfg }) {
 }
 
 export default function Home() {
-  const [active, setActive] = useState(0);
-  useEffect(() => {
-    const id = setInterval(
-      () => setActive((a) => (a + 1) % SLIDES.length),
-      6000,
-    );
-    return () => clearInterval(id);
-  }, []);
   const [pActive, setPActive] = useState(2);
   const [hoverP, setHoverP] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -814,50 +806,46 @@ export default function Home() {
           className="pointer-events-none absolute left-1/2 top-[300px] w-[820px] max-w-[94vw] -translate-x-1/2 opacity-60"
         />
 
-        {/* foreground — title + product slide horizontally */}
-        <div
-          className="absolute inset-0 z-10 flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${active * 100}%)` }}
-        >
-          {SLIDES.map((cfg, i) => (
-            <HeroSlide key={i} cfg={cfg} />
-          ))}
+        {/* title (amandel only) */}
+        <div className="absolute inset-0 z-10">
+          <HeroSlide cfg={AMANDEL} />
         </div>
 
-        {/* product belt — smooth carousel; side products at 30% opacity */}
+        {/* faded side peeks of the same product */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={AMANDEL.img}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute left-[-300px] top-[430px] z-[6] hidden w-[440px] opacity-25 md:block"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={AMANDEL.img}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute right-[-300px] top-[430px] z-[6] hidden w-[440px] opacity-25 md:block"
+        />
+
+        {/* center product */}
         <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[8] flex justify-center">
-          <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{
-              transform: `translateX(${((SLIDES.length - 1) / 2 - active) * SLOT}px)`,
-            }}
-          >
-            {SLIDES.map((cfg, i) => (
-              <div
-                key={i}
-                className="flex shrink-0 justify-center"
-                style={{ width: SLOT }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={cfg.img}
-                  alt={cfg.imgAlt}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  fetchPriority={i === 0 ? "high" : "auto"}
-                  decoding="async"
-                  className="float h-max w-[min(74vw,540px)] drop-shadow-2xl"
-                  style={{
-                    opacity: i === active ? 1 : 0.3,
-                    transition: "opacity 700ms ease-in-out",
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={AMANDEL.img}
+            alt={AMANDEL.imgAlt}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="float h-max w-[min(74vw,540px)] drop-shadow-2xl"
+          />
         </div>
 
         {/* decorative sparkles scattered around the product */}
-        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[7] flex justify-center">
+        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[9] flex justify-center">
           <div className="relative h-[470px] w-[740px] max-w-[94vw]">
             <Sparkle size={34} className="left-[6%]! top-[4%]!" />
             <Sparkle size={54} className="left-[-2%]! top-[46%]!" />
@@ -870,39 +858,21 @@ export default function Home() {
 
         {/* buttons — static (stay) */}
         <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
-          <button className="flex items-center gap-3 rounded-[14px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[3px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Bekijk product
             <ArrowCircle bg="#2c1250" />
           </button>
-          <button className="flex items-center gap-3 rounded-[14px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[3px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Vind product
             <ArrowCircle bg="#2c1250" />
           </button>
-        </div>
-
-        {/* carousel dots */}
-        <div className="absolute inset-x-0 bottom-[10vh] z-30 flex justify-center gap-2">
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              aria-label={`Ga naar slide ${i + 1}`}
-              aria-current={i === active ? "true" : undefined}
-              className={
-                "h-2.5 rounded-full transition-all duration-300 " +
-                (i === active
-                  ? "w-7 bg-[var(--cream)]"
-                  : "w-2.5 bg-[var(--cream)]/40 hover:bg-[var(--cream)]/70")
-              }
-            />
-          ))}
         </div>
 
         {/* ===== NAV (shared overlay) ===== */}
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
         <nav
           aria-label="Hoofdnavigatie"
-          className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#180d2b] px-5 text-white md:h-[90px] md:rounded-[32px] md:px-8"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[3px] bg-[#180d2b] px-5 text-white md:h-[90px] md:px-8"
         >
           {/* mobile: hamburger */}
           <button
@@ -985,11 +955,11 @@ export default function Home() {
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
-            <button className="flex items-center gap-2.5 rounded-full bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-[3px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Vind product
               <ArrowCircle bg="#2c1250" />
             </button>
-            <button className="flex items-center gap-2.5 rounded-full bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-[3px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Bestel nu
               <ArrowCircle bg="#2c1250" />
             </button>
@@ -998,7 +968,7 @@ export default function Home() {
 
         {/* mobile dropdown menu */}
         {menuOpen && (
-          <div className="mt-2 overflow-hidden rounded-[22px] bg-[#180d2b] px-6 py-5 text-white lg:hidden">
+          <div className="mt-2 overflow-hidden rounded-[3px] bg-[#180d2b] px-6 py-5 text-white lg:hidden">
             <ul className="flex flex-col gap-4 text-[17px] font-semibold">
               {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
@@ -1013,11 +983,11 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-2.5 rounded-full bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250]">
+              <button className="flex items-center justify-center gap-2.5 rounded-[3px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250]">
                 Vind product
                 <ArrowCircle bg="#2c1250" />
               </button>
-              <button className="flex items-center justify-center gap-2.5 rounded-full border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
+              <button className="flex items-center justify-center gap-2.5 rounded-[3px] border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
                 Bestel nu
               </button>
             </div>
@@ -1027,7 +997,7 @@ export default function Home() {
       </section>
 
       {/* ===== PURPLE PANEL: marquee + beige nested so purple runs behind (no corner gap) ===== */}
-      <div className="relative z-10 mx-4 -mt-[10vh] overflow-hidden rounded-t-[40px] bg-[#dccbf1] md:mx-8">
+      <div className="relative z-10 mx-4 -mt-[3vh] overflow-hidden rounded-t-[40px] bg-[#dccbf1] md:mx-8">
         {/* marquee */}
         <div className="overflow-hidden py-4">
           <div className="marquee-track text-[19px] font-medium uppercase tracking-wide text-black">
