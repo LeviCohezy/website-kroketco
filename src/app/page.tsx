@@ -831,7 +831,7 @@ export default function Home() {
           alt="Premium kwaliteit — gemaakt in België"
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute left-[calc(50%-340px)] top-[500px] z-[10] hidden w-[150px] -rotate-6 drop-shadow-xl md:block"
+          className="pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block"
         />
 
         {/* decorative sparkles scattered around the product */}
