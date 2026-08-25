@@ -872,7 +872,7 @@ export default function Home() {
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
         <nav
           aria-label="Hoofdnavigatie"
-          className="relative flex h-[70px] w-full items-center justify-between rounded-[5px] border border-white/10 bg-[#180d2b]/45 px-5 text-white shadow-lg backdrop-blur-xl md:h-[90px] md:px-8"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[12px] border border-white/10 bg-[#180d2b]/45 px-5 text-white shadow-lg backdrop-blur-xl md:h-[90px] md:px-8"
         >
           {/* mobile: hamburger */}
           <button
