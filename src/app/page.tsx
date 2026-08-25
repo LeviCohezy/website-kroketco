@@ -127,7 +127,7 @@ function SideProduct({
 }) {
   return (
     <div
-      className={`pointer-events-none absolute z-10 flex h-[320px] w-[340px] items-center justify-center ${
+      className={`pointer-events-none absolute z-10 hidden h-[320px] w-[340px] items-center justify-center md:flex ${
         side === "left" ? "left-[-30px]" : "right-[-30px]"
       } ${vpos === "top" ? "top-[-20px]" : "bottom-[-20px]"}`}
     >
@@ -601,6 +601,7 @@ export default function Home() {
   }, []);
   const [pActive, setPActive] = useState(2);
   const [hoverP, setHoverP] = useState<number | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [attrActive, setAttrActive] = useState(2);
   const [recActive, setRecActive] = useState(2);
   const stepRecipes = (dir: number) =>
@@ -665,7 +666,7 @@ export default function Home() {
                   loading={i === 0 ? "eager" : "lazy"}
                   fetchPriority={i === 0 ? "high" : "auto"}
                   decoding="async"
-                  className="float h-max w-[700px] drop-shadow-2xl"
+                  className="float h-max w-[min(88vw,700px)] drop-shadow-2xl"
                   style={{
                     opacity: i === active ? 1 : 0.3,
                     transition: "opacity 700ms ease-in-out",
@@ -749,9 +750,35 @@ export default function Home() {
 
         {/* ===== NAV (shared overlay) ===== */}
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
-        <nav className="relative flex h-[90px] w-full items-center justify-between rounded-[28px] bg-[#0E4B3A] px-8 text-white">
-          {/* left links */}
-          <ul className="flex items-center gap-9 text-[17px] font-semibold">
+        <nav className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#0E4B3A] px-5 text-white md:h-[90px] md:rounded-[28px] md:px-8">
+          {/* mobile: hamburger */}
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label={menuOpen ? "Menu sluiten" : "Menu openen"}
+            aria-expanded={menuOpen}
+            className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/10 lg:hidden"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              {menuOpen ? (
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="#fff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M4 7h16M4 12h16M4 17h16"
+                  stroke="#fff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+          </button>
+
+          {/* left links (desktop) */}
+          <ul className="hidden items-center gap-9 text-[17px] font-semibold lg:flex">
             <li className="flex cursor-pointer items-center gap-1.5 transition-opacity hover:opacity-70">
               Products
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -790,13 +817,14 @@ export default function Home() {
 
           {/* center logo */}
           <span
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[30px] font-black tracking-tight text-[var(--cream)]"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[24px] font-black tracking-tight text-[var(--cream)] md:text-[30px]"
           >
             Kroketco
           </span>
 
-          {/* right buttons */}
-          <div className="flex items-center gap-3">
+          {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
+          <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
+          <div className="hidden items-center gap-3 lg:flex">
             <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Find Product
               <ArrowCircle />
@@ -807,11 +835,39 @@ export default function Home() {
             </button>
           </div>
         </nav>
+
+        {/* mobile dropdown menu */}
+        {menuOpen && (
+          <div className="mt-2 overflow-hidden rounded-[22px] bg-[#0E4B3A] px-6 py-5 text-white lg:hidden">
+            <ul className="flex flex-col gap-4 text-[17px] font-semibold">
+              {["Products", ...NAV_LINKS].map((l) => (
+                <li key={l}>
+                  <a
+                    href="#"
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded py-1 transition-opacity hover:opacity-70"
+                  >
+                    {l}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5 flex flex-col gap-3">
+              <button className="flex items-center justify-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A]">
+                Find Product
+                <ArrowCircle />
+              </button>
+              <button className="flex items-center justify-center gap-2.5 rounded-[6px] border-2 border-white px-5 py-3 text-[16px] font-bold text-white">
+                Dine with Us
+              </button>
+            </div>
+          </div>
+        )}
         </header>
       </section>
 
       {/* ===== PURPLE PANEL: marquee + beige nested so purple runs behind (no corner gap) ===== */}
-      <div className="relative z-10 mx-8 -mt-[10vh] overflow-hidden rounded-t-[40px] bg-[#dccbf1]">
+      <div className="relative z-10 mx-4 -mt-[10vh] overflow-hidden rounded-t-[40px] bg-[#dccbf1] md:mx-8">
         {/* marquee */}
         <div className="overflow-hidden py-4">
           <div className="marquee-track text-[19px] font-medium uppercase tracking-wide text-black">
@@ -835,16 +891,16 @@ export default function Home() {
         </div>
 
         {/* ===== PRODUCTS (second section) ===== */}
-        <section className="relative rounded-t-[40px] bg-[var(--cream)] px-8 pb-20 pt-10">
+        <section className="relative rounded-t-[40px] bg-[var(--cream)] px-4 pb-20 pt-10 md:px-8">
           {/* centered tabs */}
-          <div className="mx-auto flex max-w-[1100px] items-center justify-center gap-9">
-            <button className="flex items-center gap-2 rounded-[6px] bg-[var(--kc-green)] px-6 py-4 text-[17px] font-bold text-white">
+          <div className="mx-auto flex max-w-[1100px] flex-wrap items-center justify-center gap-x-6 gap-y-4 md:gap-9">
+            <button className="flex items-center gap-2 rounded-[6px] bg-[var(--kc-green)] px-6 py-4 text-[17px] font-bold text-white transition-transform duration-200 hover:-translate-y-0.5">
               <svg width="16" height="16" viewBox="0 0 100 100" fill="#fff">
                 <path d="M50 4 58 34 88 26 66 50 88 74 58 66 50 96 42 66 12 74 34 50 12 26 42 34Z" />
               </svg>
               Most Popular
             </button>
-            <div className="flex items-center gap-9 text-[17px] font-bold text-[var(--kc-green)]">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[17px] font-bold text-[var(--kc-green)] md:gap-9">
               <span className="flex items-center gap-2">
                 <CatIcon color="var(--kc-orange)" />
                 Kaas
@@ -960,8 +1016,8 @@ export default function Home() {
       </div>
 
       {/* ===== ATTRIBUTES / EXPLORE SECTION ===== */}
-      <section className="relative overflow-hidden px-8 py-28">
-        <div className="relative mx-auto flex min-h-[520px] max-w-[1200px] items-center justify-center">
+      <section className="relative overflow-hidden px-6 py-16 md:px-8 md:py-28">
+        <div className="relative mx-auto flex min-h-[360px] max-w-[1200px] items-center justify-center md:min-h-[520px]">
           {/* diagonal placement, alternating per active word:
               even words → left-top + right-bottom, odd words → left-bottom + right-top */}
           <SideProduct
@@ -976,7 +1032,10 @@ export default function Home() {
               <button
                 key={c.word}
                 onMouseEnter={() => setAttrActive(i)}
-                className="text-center font-extrabold uppercase leading-[0.86] transition-colors"
+                onFocus={() => setAttrActive(i)}
+                onClick={() => setAttrActive(i)}
+                aria-pressed={i === attrActive}
+                className="text-center font-extrabold uppercase leading-[0.86] transition-colors duration-200 hover:opacity-90"
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "clamp(44px, 6.4vw, 104px)",
@@ -999,11 +1058,11 @@ export default function Home() {
       </section>
 
       {/* ===== UGC SECTION (no background) ===== */}
-      <section className="mx-8 py-4 pb-20">
+      <section className="mx-4 py-4 pb-20 md:mx-8">
         <div className="mx-auto max-w-[1400px]">
           <div className="flex items-end justify-between">
             <h2
-              className="text-[42px] font-extrabold uppercase leading-[0.9] text-[var(--kc-green)]"
+              className="text-[32px] font-extrabold uppercase leading-[0.9] text-[var(--kc-green)] md:text-[42px]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Geliefd in
