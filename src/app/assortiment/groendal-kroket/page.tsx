@@ -153,7 +153,7 @@ export default function GroendalKroket() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute right-[calc(50%-380px)] top-[560px] z-[10] hidden w-[230px] drop-shadow-xl md:block"
+          className="pointer-events-none absolute right-[calc(50%-540px)] top-[530px] z-[10] hidden w-[380px] drop-shadow-xl md:block"
         />
 
         {/* cheese platter decoration, bottom (big) */}
@@ -164,7 +164,7 @@ export default function GroendalKroket() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute left-[calc(50%-410px)] top-[705px] z-[11] hidden w-[320px] drop-shadow-xl md:block"
+          className="pointer-events-none absolute left-[calc(50%-560px)] top-[680px] z-[11] hidden w-[450px] drop-shadow-xl md:block"
         />
 
         {/* sparkles */}
