@@ -28,6 +28,7 @@ const PRODUCTS: Product[] = [
     name: "Groendal Groentekroket",
     tags: ["Vegetarisch", "Vegan", "Snel klaar"],
     shape: asset("/assets/shapes/shape5.png"),
+    href: asset("/assortiment/groendal-kroket/"),
   },
   {
     img: asset("/assets/hero-product-2.png"),
