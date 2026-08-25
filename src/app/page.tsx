@@ -447,7 +447,7 @@ function OrganicBg({
   );
 }
 
-const NAV_LINKS = ["Recipes", "About Us", "News"];
+const NAV_LINKS = ["Recepten", "Over ons", "Nieuws"];
 
 type Badge = {
   kind: "maple" | "made";
@@ -721,11 +721,11 @@ export default function Home() {
         {/* buttons — static (stay) */}
         <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
           <button className="flex items-center gap-3 rounded-[6px] bg-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
-            View Product
+            Bekijk product
             <ArrowCircle dark={false} />
           </button>
           <button className="flex items-center gap-3 rounded-[6px] border-2 border-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-[#0E4B3A] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0E4B3A] hover:text-white active:translate-y-0">
-            Find Product
+            Vind een winkel
             <ArrowCircle />
           </button>
         </div>
@@ -780,7 +780,7 @@ export default function Home() {
           {/* left links (desktop) */}
           <ul className="hidden items-center gap-9 text-[17px] font-semibold lg:flex">
             <li className="flex cursor-pointer items-center gap-1.5 transition-opacity hover:opacity-70">
-              Products
+              Producten
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path
                   d="M3 4.5 6 7.5 9 4.5"
@@ -800,7 +800,7 @@ export default function Home() {
               </li>
             ))}
             <li className="flex cursor-pointer items-center gap-2 transition-opacity hover:opacity-70">
-              Search
+              Zoeken
               <span className="grid h-[22px] w-[22px] place-items-center rounded-full bg-white/15">
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
                   <circle cx="6" cy="6" r="4" stroke="#fff" strokeWidth="1.6" />
@@ -826,11 +826,11 @@ export default function Home() {
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
             <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
-              Find Product
+              Vind een winkel
               <ArrowCircle />
             </button>
             <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
-              Dine with Us
+              Onze recepten
               <ArrowCircle />
             </button>
           </div>
@@ -840,7 +840,7 @@ export default function Home() {
         {menuOpen && (
           <div className="mt-2 overflow-hidden rounded-[22px] bg-[#0E4B3A] px-6 py-5 text-white lg:hidden">
             <ul className="flex flex-col gap-4 text-[17px] font-semibold">
-              {["Products", ...NAV_LINKS].map((l) => (
+              {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
                   <a
                     href="#"
@@ -854,11 +854,11 @@ export default function Home() {
             </ul>
             <div className="mt-5 flex flex-col gap-3">
               <button className="flex items-center justify-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A]">
-                Find Product
+                Vind een winkel
                 <ArrowCircle />
               </button>
               <button className="flex items-center justify-center gap-2.5 rounded-[6px] border-2 border-white px-5 py-3 text-[16px] font-bold text-white">
-                Dine with Us
+                Onze recepten
               </button>
             </div>
           </div>
@@ -874,8 +874,8 @@ export default function Home() {
             {Array.from({ length: 2 }).map((_, i) => (
               <span key={i} className="flex items-center">
                 {[
-                  "Golden outside, creamy inside",
-                  "Factory fresh · Golden · Easy",
+                  "Goudbruin vanbuiten, romig vanbinnen",
+                  "Vers uit de fabriek · Goudbruin · Snel klaar",
                   "Verse kroketten & purée",
                 ]
                   .flatMap((t) => [t, t])
@@ -898,7 +898,7 @@ export default function Home() {
               <svg width="16" height="16" viewBox="0 0 100 100" fill="#fff">
                 <path d="M50 4 58 34 88 26 66 50 88 74 58 66 50 96 42 66 12 74 34 50 12 26 42 34Z" />
               </svg>
-              Most Popular
+              Meest populair
             </button>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[17px] font-bold text-[var(--kc-green)] md:gap-9">
               <span className="flex items-center gap-2">
@@ -963,7 +963,7 @@ export default function Home() {
             <div className="flex items-center gap-4 rounded-full bg-[var(--kc-green)] px-4 py-2.5">
               <button
                 onClick={() => stepProducts(-1)}
-                aria-label="Previous"
+                aria-label="Vorige"
                 className="grid h-8 w-8 place-items-center rounded-full text-white transition hover:bg-white/15"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -981,7 +981,7 @@ export default function Home() {
                   <button
                     key={i}
                     onClick={() => setPActive(i)}
-                    aria-label={`Product ${i + 1}`}
+                    aria-label={`Ga naar product ${i + 1}`}
                     className={
                       i === pActive
                         ? "h-2 w-5 rounded-full bg-white"
@@ -992,7 +992,7 @@ export default function Home() {
               </div>
               <button
                 onClick={() => stepProducts(1)}
-                aria-label="Next"
+                aria-label="Volgende"
                 className="grid h-8 w-8 place-items-center rounded-full text-white transition hover:bg-white/15"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -1006,8 +1006,8 @@ export default function Home() {
                 </svg>
               </button>
             </div>
-            <button className="flex items-center gap-2.5 rounded-full bg-white px-6 py-3.5 text-[16px] font-bold text-[var(--kc-green)] shadow">
-              View All
+            <button className="flex items-center gap-2.5 rounded-full bg-white px-6 py-3.5 text-[16px] font-bold text-[var(--kc-green)] shadow transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
+              Bekijk alles
               <ArrowCircle />
             </button>
           </div>
