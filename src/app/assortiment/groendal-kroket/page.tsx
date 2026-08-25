@@ -54,54 +54,6 @@ function Sparkle({ size, className }: { size: number; className?: string }) {
   );
 }
 
-function Flower({ className, color }: { className?: string; color: string }) {
-  return (
-    <svg viewBox="0 0 200 200" className={className}>
-      <g fill={color}>
-        {Array.from({ length: 11 }).map((_, i) => (
-          <ellipse
-            key={i}
-            cx="100"
-            cy="30"
-            rx="27"
-            ry="54"
-            transform={`rotate(${(i * 360) / 11} 100 100)`}
-          />
-        ))}
-        <circle cx="100" cy="100" r="48" />
-      </g>
-    </svg>
-  );
-}
-
-function PremiumBadge({ size = 170 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 100 100" style={{ width: size, height: size }}>
-      <defs>
-        <path id="pb-t" d="M 50 50 m -38 0 a 38 38 0 1 1 76 0" fill="none" />
-        <path id="pb-b" d="M 50 50 m -33 0 a 33 33 0 1 0 66 0" fill="none" />
-      </defs>
-      <circle cx="50" cy="50" r="49" fill={CREAM} />
-      <circle cx="50" cy="50" r="43" fill="none" stroke={HEAD} strokeWidth="0.8" opacity="0.6" />
-      <text fontSize="8" fontWeight="700" letterSpacing="1.2" fill={HEAD} fontFamily="var(--font-sans)">
-        <textPath href="#pb-t" startOffset="11%">
-          PREMIUM KWALITEIT
-        </textPath>
-      </text>
-      <text fontSize="7" fontWeight="700" letterSpacing="0.5" fill={HEAD} fontFamily="var(--font-sans)">
-        <textPath href="#pb-b" startOffset="13%">
-          GEMAAKT IN BELGIË
-        </textPath>
-      </text>
-      {/* little leaf */}
-      <g transform="translate(50 51)" fill={SUB}>
-        <path d="M0 -13 C10 -6 10 6 0 14 C-10 6 -10 -6 0 -13Z" />
-        <path d="M0 -11 L0 12" stroke={CREAM} strokeWidth="1.4" fill="none" />
-      </g>
-    </svg>
-  );
-}
-
 export default function GroendalKroket() {
   const [menuOpen, setMenuOpen] = useState(false);
   const title: [string, string] = ["Groendal", "Kroket"];
@@ -112,9 +64,14 @@ export default function GroendalKroket() {
     <div className="relative" style={{ background: BG }}>
       <section className="relative h-screen w-full overflow-hidden" style={{ background: BG }}>
         {/* decorative flower behind the product */}
-        <Flower
-          color="#d4e3a6"
-          className="pointer-events-none absolute left-1/2 top-[290px] w-[780px] max-w-[92vw] -translate-x-1/2 opacity-70"
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/assets/groendal-flower.png")}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute left-1/2 top-[250px] w-[900px] max-w-[96vw] -translate-x-1/2 opacity-90"
         />
 
         {/* title */}
@@ -178,10 +135,15 @@ export default function GroendalKroket() {
           />
         </div>
 
-        {/* premium badge left */}
-        <div className="pointer-events-none absolute left-[calc(50%-380px)] top-[470px] z-[10] hidden -rotate-6 drop-shadow-lg md:block">
-          <PremiumBadge size={172} />
-        </div>
+        {/* premium quality badge, left of the product (big) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/assets/groendal-badge.png")}
+          alt="Premium kwaliteit — gemaakt in België"
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute left-[calc(50%-430px)] top-[430px] z-[10] hidden w-[260px] -rotate-6 drop-shadow-xl md:block"
+        />
 
         {/* green cheese wheel, right of the product */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -191,7 +153,18 @@ export default function GroendalKroket() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute right-[calc(50%-360px)] top-[560px] z-[10] hidden w-[230px] drop-shadow-xl md:block"
+          className="pointer-events-none absolute right-[calc(50%-380px)] top-[560px] z-[10] hidden w-[230px] drop-shadow-xl md:block"
+        />
+
+        {/* cheese platter decoration, bottom (big) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/assets/groendal-cheese2.png")}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute left-[calc(50%-410px)] top-[705px] z-[11] hidden w-[320px] drop-shadow-xl md:block"
         />
 
         {/* sparkles */}
