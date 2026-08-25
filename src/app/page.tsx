@@ -811,7 +811,7 @@ export default function Home() {
           <HeroSlide cfg={AMANDEL} />
         </div>
 
-        {/* faded side peeks of the same product */}
+        {/* full-colour side peeks of the same product */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={AMANDEL.img}
@@ -819,7 +819,7 @@ export default function Home() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute left-[-300px] top-[430px] z-[6] hidden w-[440px] opacity-25 md:block"
+          className="pointer-events-none absolute left-[-190px] top-[418px] z-[6] hidden w-[400px] md:block"
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -828,7 +828,7 @@ export default function Home() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute right-[-300px] top-[430px] z-[6] hidden w-[440px] opacity-25 md:block"
+          className="pointer-events-none absolute right-[-190px] top-[418px] z-[6] hidden w-[400px] md:block"
         />
 
         {/* center product */}
@@ -840,7 +840,7 @@ export default function Home() {
             loading="eager"
             fetchPriority="high"
             decoding="async"
-            className="float h-max w-[min(74vw,540px)] drop-shadow-2xl"
+            className="float h-max w-[min(64vw,462px)] drop-shadow-2xl"
           />
         </div>
 
@@ -858,11 +858,11 @@ export default function Home() {
 
         {/* buttons — static (stay) */}
         <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
-          <button className="flex items-center gap-3 rounded-[3px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[5px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Bekijk product
             <ArrowCircle bg="#2c1250" />
           </button>
-          <button className="flex items-center gap-3 rounded-[3px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[5px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Vind product
             <ArrowCircle bg="#2c1250" />
           </button>
@@ -872,7 +872,7 @@ export default function Home() {
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
         <nav
           aria-label="Hoofdnavigatie"
-          className="relative flex h-[70px] w-full items-center justify-between rounded-[3px] bg-[#180d2b] px-5 text-white md:h-[90px] md:px-8"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[5px] border border-white/10 bg-[#180d2b]/45 px-5 text-white shadow-lg backdrop-blur-xl md:h-[90px] md:px-8"
         >
           {/* mobile: hamburger */}
           <button
@@ -942,24 +942,30 @@ export default function Home() {
           <a
             href="#"
             aria-label="Kroketco Belgium startpagina"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity hover:opacity-80"
+            className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 transition-opacity hover:opacity-80"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset("/assets/logo-kroketco.png")}
               alt="Kroketco Belgium"
-              className="h-[52px] w-auto md:h-[72px]"
+              className="h-[46px] w-auto md:h-[58px]"
             />
+            <span
+              className="text-[24px] text-[var(--cream)] md:text-[30px]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Kroketco
+            </span>
           </a>
 
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
-            <button className="flex items-center gap-2.5 rounded-[3px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Vind product
               <ArrowCircle bg="#2c1250" />
             </button>
-            <button className="flex items-center gap-2.5 rounded-[3px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Bestel nu
               <ArrowCircle bg="#2c1250" />
             </button>
@@ -968,7 +974,7 @@ export default function Home() {
 
         {/* mobile dropdown menu */}
         {menuOpen && (
-          <div className="mt-2 overflow-hidden rounded-[3px] bg-[#180d2b] px-6 py-5 text-white lg:hidden">
+          <div className="mt-2 overflow-hidden rounded-[5px] border border-white/10 bg-[#180d2b]/85 px-6 py-5 text-white backdrop-blur-xl lg:hidden">
             <ul className="flex flex-col gap-4 text-[17px] font-semibold">
               {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
@@ -983,11 +989,11 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-2.5 rounded-[3px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250]">
+              <button className="flex items-center justify-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250]">
                 Vind product
                 <ArrowCircle bg="#2c1250" />
               </button>
-              <button className="flex items-center justify-center gap-2.5 rounded-[3px] border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
+              <button className="flex items-center justify-center gap-2.5 rounded-[5px] border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
                 Bestel nu
               </button>
             </div>
