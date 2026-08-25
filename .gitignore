@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# unreferenced design source assets (kept local; not served by the site).
+# Move to Git LFS if you want these versioned.
+/public/assets/logo_s/
+/public/assets/Brandboard*.png
+/public/assets/ChatGPT Image*.png
+/public/assets/16ea7276-*.png

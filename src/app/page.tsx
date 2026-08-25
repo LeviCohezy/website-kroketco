@@ -750,7 +750,10 @@ export default function Home() {
 
         {/* ===== NAV (shared overlay) ===== */}
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
-        <nav className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#0E4B3A] px-5 text-white md:h-[90px] md:rounded-[28px] md:px-8">
+        <nav
+          aria-label="Hoofdnavigatie"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#0E4B3A] px-5 text-white md:h-[90px] md:rounded-[28px] md:px-8"
+        >
           {/* mobile: hamburger */}
           <button
             onClick={() => setMenuOpen((o) => !o)}
@@ -816,11 +819,13 @@ export default function Home() {
           </ul>
 
           {/* center logo */}
-          <span
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[24px] font-black tracking-tight text-[var(--cream)] md:text-[30px]"
+          <a
+            href="#"
+            aria-label="Kroketco startpagina"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[24px] font-black tracking-tight text-[var(--cream)] transition-opacity hover:opacity-80 md:text-[30px]"
           >
             Kroketco
-          </span>
+          </a>
 
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
