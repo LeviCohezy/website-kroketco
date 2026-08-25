@@ -2,6 +2,12 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 
+// GitHub Pages serves this project from a subpath (e.g. "/website-kroketco").
+// next/font, next/image and next/link get the basePath automatically, but raw
+// string asset paths do not — so we prefix them manually. Empty in local dev.
+const BP = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const asset = (p: string) => `${BP}${p}`;
+
 type Product = {
   img: string;
   name: string;
@@ -11,61 +17,61 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    img: "/assets/hero-product.png",
+    img: asset("/assets/hero-product.png"),
     name: "Emmental Kaaskroket",
     tags: ["Vegetarisch", "Halal", "Diepvries vers"],
-    shape: "/assets/shapes/shape1.png",
+    shape: asset("/assets/shapes/shape1.png"),
   },
   {
-    img: "/assets/hero-product-3.png",
+    img: asset("/assets/hero-product-3.png"),
     name: "Groendal Groentekroket",
     tags: ["Vegetarisch", "Vegan", "Snel klaar"],
-    shape: "/assets/shapes/shape5.png",
+    shape: asset("/assets/shapes/shape5.png"),
   },
   {
-    img: "/assets/hero-product-2.png",
+    img: asset("/assets/hero-product-2.png"),
     name: "Belgische Verse Purée",
     tags: ["Vegetarisch", "Glutenvrij"],
-    shape: "/assets/shapes/shape11.png",
+    shape: asset("/assets/shapes/shape11.png"),
   },
   {
-    img: "/assets/hero-product-4.png",
+    img: asset("/assets/hero-product-4.png"),
     name: "Noordzee Garnaalkroket",
     tags: ["Ambachtelijk", "Diepvries vers"],
-    shape: "/assets/shapes/shape6.png",
+    shape: asset("/assets/shapes/shape6.png"),
   },
   {
-    img: "/assets/hero-product-7.png",
+    img: asset("/assets/hero-product-7.png"),
     name: "Gebraden Kipkroket",
     tags: ["Halal", "Diepvries vers"],
-    shape: "/assets/shapes/shape8.png",
+    shape: asset("/assets/shapes/shape8.png"),
   },
   {
-    img: "/assets/hero-product-6.png",
+    img: asset("/assets/hero-product-6.png"),
     name: "Superano Kroket",
     tags: ["Ambachtelijk", "Halal"],
-    shape: "/assets/shapes/shape12.png",
+    shape: asset("/assets/shapes/shape12.png"),
   },
   {
-    img: "/assets/hero-product-5.png",
+    img: asset("/assets/hero-product-5.png"),
     name: "Amandel Kroket",
     tags: ["Vegetarisch", "Vegan"],
-    shape: "/assets/shapes/shape15.png",
+    shape: asset("/assets/shapes/shape15.png"),
   },
 ];
 
 const UGC_IMAGES = [1, 2, 3, 4, 5, 6, 7, 8].map(
-  (n) => `/assets/UGC/ugc${n}.png`,
+  (n) => asset(`/assets/UGC/ugc${n}.png`),
 );
 
 type Recipe = { img: string; title: string; time: string; bg: string };
 const RECIPES: Recipe[] = [
-  { img: "/assets/UGC/ugc3.png", title: "Kroket Bites Plank", time: "10 min", bg: "#F5C542" },
-  { img: "/assets/UGC/ugc4.png", title: "Krokdog Deluxe", time: "6 min", bg: "#8FE6FF" },
-  { img: "/assets/UGC/ugc5.png", title: "Purée & Kroket Bowl", time: "15 min", bg: "#A98BEF" },
-  { img: "/assets/UGC/ugc6.png", title: "Superano met Frietjes", time: "40 min", bg: "#8FE6FF" },
-  { img: "/assets/UGC/ugc7.png", title: "Vegan Kroket Wrap", time: "12 min", bg: "#C7E36A" },
-  { img: "/assets/UGC/ugc8.png", title: "Garnaal Kroket Toast", time: "8 min", bg: "#FF8D8D" },
+  { img: asset("/assets/UGC/ugc3.png"), title: "Kroket Bites Plank", time: "10 min", bg: "#F5C542" },
+  { img: asset("/assets/UGC/ugc4.png"), title: "Krokdog Deluxe", time: "6 min", bg: "#8FE6FF" },
+  { img: asset("/assets/UGC/ugc5.png"), title: "Purée & Kroket Bowl", time: "15 min", bg: "#A98BEF" },
+  { img: asset("/assets/UGC/ugc6.png"), title: "Superano met Frietjes", time: "40 min", bg: "#8FE6FF" },
+  { img: asset("/assets/UGC/ugc7.png"), title: "Vegan Kroket Wrap", time: "12 min", bg: "#C7E36A" },
+  { img: asset("/assets/UGC/ugc8.png"), title: "Garnaal Kroket Toast", time: "8 min", bg: "#FF8D8D" },
 ];
 
 const SOCIAL = [
@@ -83,28 +89,28 @@ type AttrCat = {
 const ATTR: AttrCat[] = [
   {
     word: "Meatlover",
-    left: { img: "/assets/hero-product-4.png", shape: "/assets/shapes/shape6.png" },
-    right: { img: "/assets/hero-product-7.png", shape: "/assets/shapes/shape8.png" },
+    left: { img: asset("/assets/hero-product-4.png"), shape: asset("/assets/shapes/shape6.png") },
+    right: { img: asset("/assets/hero-product-7.png"), shape: asset("/assets/shapes/shape8.png") },
   },
   {
     word: "Cheesy",
-    left: { img: "/assets/hero-product.png", shape: "/assets/shapes/shape1.png" },
-    right: { img: "/assets/hero-product-6.png", shape: "/assets/shapes/shape12.png" },
+    left: { img: asset("/assets/hero-product.png"), shape: asset("/assets/shapes/shape1.png") },
+    right: { img: asset("/assets/hero-product-6.png"), shape: asset("/assets/shapes/shape12.png") },
   },
   {
     word: "Vegan",
-    left: { img: "/assets/hero-product-3.png", shape: "/assets/shapes/shape5.png" },
-    right: { img: "/assets/hero-product-5.png", shape: "/assets/shapes/shape15.png" },
+    left: { img: asset("/assets/hero-product-3.png"), shape: asset("/assets/shapes/shape5.png") },
+    right: { img: asset("/assets/hero-product-5.png"), shape: asset("/assets/shapes/shape15.png") },
   },
   {
     word: "Culinair",
-    left: { img: "/assets/hero-product-6.png", shape: "/assets/shapes/shape12.png" },
-    right: { img: "/assets/hero-product-4.png", shape: "/assets/shapes/shape16.png" },
+    left: { img: asset("/assets/hero-product-6.png"), shape: asset("/assets/shapes/shape12.png") },
+    right: { img: asset("/assets/hero-product-4.png"), shape: asset("/assets/shapes/shape16.png") },
   },
   {
     word: "Potato",
-    left: { img: "/assets/hero-product-2.png", shape: "/assets/shapes/shape11.png" },
-    right: { img: "/assets/hero-product.png", shape: "/assets/shapes/shape10.png" },
+    left: { img: asset("/assets/hero-product-2.png"), shape: asset("/assets/shapes/shape11.png") },
+    right: { img: asset("/assets/hero-product.png"), shape: asset("/assets/shapes/shape10.png") },
   },
 ];
 
@@ -470,7 +476,7 @@ const SLIDES: SlideCfg[] = [
     titleLines: ["Emmental Kaas", "Kroketjes"],
     titleFont: "var(--font-kuah)",
     titleColor: "#F88804",
-    img: "/assets/hero-product.png",
+    img: asset("/assets/hero-product.png"),
     imgAlt: "Kroketco Emmental kaaskroketjes",
     badges: [
       { kind: "maple", size: 220, side: "left", v: "top" },
@@ -484,7 +490,7 @@ const SLIDES: SlideCfg[] = [
     titleLines: ["Belgische", "Purée"],
     titleFont: "var(--font-kuah)",
     titleColor: "#ffffff",
-    img: "/assets/hero-product-2.png",
+    img: asset("/assets/hero-product-2.png"),
     imgAlt: "Kroketco Belgische verse purée",
     badges: [{ kind: "maple", size: 220, side: "right", v: "top" }],
   },
@@ -495,7 +501,7 @@ const SLIDES: SlideCfg[] = [
     titleLines: ["Groendal", "Kroketjes"],
     titleFont: "var(--font-kuah)",
     titleColor: "#123f24",
-    img: "/assets/hero-product-3.png",
+    img: asset("/assets/hero-product-3.png"),
     imgAlt: "Kroketco Groendal kroketjes",
     badges: [
       { kind: "maple", size: 220, side: "left", v: "top" },
@@ -509,7 +515,7 @@ const SLIDES: SlideCfg[] = [
     titleLines: ["Garnaal", "Kroketten"],
     titleFont: "var(--font-kuah)",
     titleColor: "#0E4B3A",
-    img: "/assets/hero-product-4.png",
+    img: asset("/assets/hero-product-4.png"),
     imgAlt: "Kroketco Noordzee garnaalkroket",
     badges: [
       { kind: "maple", size: 220, side: "right", v: "top" },
@@ -523,7 +529,7 @@ const SLIDES: SlideCfg[] = [
     titleLines: ["Amandel", "Kroket"],
     titleFont: "var(--font-kuah)",
     titleColor: "#fff3e2",
-    img: "/assets/hero-product-5.png",
+    img: asset("/assets/hero-product-5.png"),
     imgAlt: "Kroketco Amandel kroket",
     badges: [
       { kind: "maple", size: 220, side: "left", v: "top" },
@@ -537,7 +543,7 @@ const SLIDES: SlideCfg[] = [
     titleLines: ["Superano", "Kroket"],
     titleFont: "var(--font-kuah)",
     titleColor: "#c7e36a",
-    img: "/assets/hero-product-6.png",
+    img: asset("/assets/hero-product-6.png"),
     imgAlt: "Kroketco Superano kroket",
     badges: [
       { kind: "maple", size: 220, side: "right", v: "top" },
@@ -551,7 +557,7 @@ const SLIDES: SlideCfg[] = [
     titleLines: ["Kip", "Kroket"],
     titleFont: "var(--font-kuah)",
     titleColor: "#fff3e2",
-    img: "/assets/hero-product-7.png",
+    img: asset("/assets/hero-product-7.png"),
     imgAlt: "Kroketco Kip kroket",
     badges: [
       { kind: "maple", size: 220, side: "left", v: "top" },
