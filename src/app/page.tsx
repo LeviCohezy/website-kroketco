@@ -13,6 +13,7 @@ type Product = {
   name: string;
   tags: string[];
   shape: string;
+  href?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -39,6 +40,7 @@ const PRODUCTS: Product[] = [
     name: "Noordzee Garnaalkroket",
     tags: ["Ambachtelijk", "Diepvries vers"],
     shape: asset("/assets/shapes/shape6.png"),
+    href: asset("/assortiment/garnaal-kroket/"),
   },
   {
     img: asset("/assets/hero-product-7.png"),
@@ -57,6 +59,7 @@ const PRODUCTS: Product[] = [
     name: "Amandel Kroket",
     tags: ["Vegetarisch", "Vegan"],
     shape: asset("/assets/shapes/shape15.png"),
+    href: asset("/assortiment/amandel-kroket/"),
   },
 ];
 
@@ -1075,7 +1078,11 @@ export default function Home() {
                         }
                         onHover={() => setHoverP(i)}
                         onLeave={() => setHoverP(null)}
-                        onSelect={() => setPActive(i)}
+                        onSelect={() =>
+                          p.href
+                            ? (window.location.href = p.href)
+                            : setPActive(i)
+                        }
                       />
                     </div>
                   );
