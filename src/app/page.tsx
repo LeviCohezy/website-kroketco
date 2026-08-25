@@ -291,9 +291,17 @@ function ProductCard({
   );
 }
 
-function ArrowCircle({ dark = true, bg }: { dark?: boolean; bg?: string }) {
+function ArrowCircle({
+  dark = true,
+  bg,
+  fg,
+}: {
+  dark?: boolean;
+  bg?: string;
+  fg?: string;
+}) {
   const circleBg = bg ?? (dark ? "#0E4B3A" : "#ffffff");
-  const arrow = bg ? "#fff" : dark ? "#fff" : "#0E4B3A";
+  const arrow = fg ?? (bg ? "#fff" : dark ? "#fff" : "#0E4B3A");
   return (
     <span
       className="grid h-6 w-6 place-items-center rounded-full"
@@ -312,7 +320,15 @@ function ArrowCircle({ dark = true, bg }: { dark?: boolean; bg?: string }) {
   );
 }
 
-function Sparkle({ size, className }: { size: number; className?: string }) {
+function Sparkle({
+  size,
+  className,
+  color = "#ffffff",
+}: {
+  size: number;
+  className?: string;
+  color?: string;
+}) {
   return (
     <svg
       width={size}
@@ -323,7 +339,7 @@ function Sparkle({ size, className }: { size: number; className?: string }) {
     >
       <path
         d="M50 0 C54 30 70 46 100 50 C70 54 54 70 50 100 C46 70 30 54 0 50 C30 46 46 30 50 0Z"
-        fill="#ffffff"
+        fill={color}
       />
     </svg>
   );
@@ -708,53 +724,13 @@ type SlideCfg = {
   imgAlt: string;
 };
 
-const SLIDES: SlideCfg[] = [
-  {
-    titleLines: ["Amandel", "Kroket"],
-    subtitle: "Belgische amandelkroketten",
-    img: asset("/assets/hero-product-5.png"),
-    imgAlt: "Kroketco Amandel kroket",
-  },
-  {
-    titleLines: ["Emmental Kaas", "Kroketjes"],
-    subtitle: "Romige emmental kaaskroketjes",
-    img: asset("/assets/hero-product.png"),
-    imgAlt: "Kroketco Emmental kaaskroketjes",
-  },
-  {
-    titleLines: ["Belgische", "Purée"],
-    subtitle: "Verse Belgische aardappelpurée",
-    img: asset("/assets/hero-product-2.png"),
-    imgAlt: "Kroketco Belgische verse purée",
-  },
-  {
-    titleLines: ["Groendal", "Kroketjes"],
-    subtitle: "Groentekroketjes vol smaak",
-    img: asset("/assets/hero-product-3.png"),
-    imgAlt: "Kroketco Groendal kroketjes",
-  },
-  {
-    titleLines: ["Garnaal", "Kroketten"],
-    subtitle: "Noordzee garnaalkroketten",
-    img: asset("/assets/hero-product-4.png"),
-    imgAlt: "Kroketco Noordzee garnaalkroket",
-  },
-  {
-    titleLines: ["Superano", "Kroket"],
-    subtitle: "Pittige superano kroket",
-    img: asset("/assets/hero-product-6.png"),
-    imgAlt: "Kroketco Superano kroket",
-  },
-  {
-    titleLines: ["Kip", "Kroket"],
-    subtitle: "Gebraden kipkroket",
-    img: asset("/assets/hero-product-7.png"),
-    imgAlt: "Kroketco Kip kroket",
-  },
-];
-
-// Only the amandel slide is shown in the hero.
-const AMANDEL = SLIDES[0];
+// The hero shows a single product.
+const HERO: SlideCfg = {
+  titleLines: ["Garnaal", "Kroket"],
+  subtitle: "Belgische garnaalkroketten",
+  img: asset("/assets/garnaal-product.png"),
+  imgAlt: "Kroketco Garnaal kroket",
+};
 
 function HeroSlide({ cfg }: { cfg: SlideCfg }) {
   return (
@@ -765,7 +741,7 @@ function HeroSlide({ cfg }: { cfg: SlideCfg }) {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(46px, 7.6vw, 118px)",
-            color: "var(--cream)",
+            color: "#0d3b6f",
           }}
         >
           {cfg.titleLines[0]}
@@ -773,10 +749,10 @@ function HeroSlide({ cfg }: { cfg: SlideCfg }) {
           {cfg.titleLines[1]}
         </h1>
         <div className="mt-4 flex items-center gap-4 px-4">
-          <span className="h-px w-8 bg-[#e7b64f]/50 md:w-12" />
+          <span className="h-px w-8 bg-[#1f6fc4]/60 md:w-12" />
           <span
-            className="whitespace-nowrap text-center text-[15px] font-medium md:text-[19px]"
-            style={{ color: "#e7b64f" }}
+            className="whitespace-nowrap text-center text-[15px] font-semibold md:text-[19px]"
+            style={{ color: "#1257a0" }}
           >
             {cfg.subtitle}
           </span>
@@ -798,23 +774,27 @@ export default function Home() {
   return (
     <div className="relative bg-white">
       {/* ===== HERO SLIDER (a bit taller than the viewport) ===== */}
-      <section className="relative h-[106vh] w-full overflow-hidden bg-[#3f1d63]">
+      <section className="relative h-[106vh] w-full overflow-hidden bg-[#AAD7FC]">
         {/* single soft decorative flower behind the product */}
-        <OrganicBg
-          shape="flower"
-          color="#5a3186"
-          className="pointer-events-none absolute left-1/2 top-[300px] w-[820px] max-w-[94vw] -translate-x-1/2 opacity-60"
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/assets/garnaal-flower.png")}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute left-1/2 top-[300px] w-[760px] max-w-[92vw] -translate-x-1/2 opacity-45"
         />
 
         {/* title (amandel only) */}
         <div className="absolute inset-0 z-10">
-          <HeroSlide cfg={AMANDEL} />
+          <HeroSlide cfg={HERO} />
         </div>
 
         {/* full-colour side peeks of the same product */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={AMANDEL.img}
+          src={HERO.img}
           alt=""
           aria-hidden="true"
           loading="lazy"
@@ -823,7 +803,7 @@ export default function Home() {
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={AMANDEL.img}
+          src={HERO.img}
           alt=""
           aria-hidden="true"
           loading="lazy"
@@ -835,8 +815,8 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[8] flex justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={AMANDEL.img}
-            alt={AMANDEL.imgAlt}
+            src={HERO.img}
+            alt={HERO.imgAlt}
             loading="eager"
             fetchPriority="high"
             decoding="async"
@@ -858,13 +838,13 @@ export default function Home() {
 
         {/* buttons — static (stay) */}
         <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
-          <button className="flex items-center gap-3 rounded-[5px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[5px] bg-[#0d3b6f] px-6 py-3.5 text-[15px] font-bold text-[var(--cream)] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Bekijk product
-            <ArrowCircle bg="#2c1250" />
+            <ArrowCircle bg="var(--cream)" fg="#0d3b6f" />
           </button>
-          <button className="flex items-center gap-3 rounded-[5px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[5px] bg-[#0d3b6f] px-6 py-3.5 text-[15px] font-bold text-[var(--cream)] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Vind product
-            <ArrowCircle bg="#2c1250" />
+            <ArrowCircle bg="var(--cream)" fg="#0d3b6f" />
           </button>
         </div>
 
@@ -872,7 +852,7 @@ export default function Home() {
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
         <nav
           aria-label="Hoofdnavigatie"
-          className="relative flex h-[70px] w-full items-center justify-between rounded-[12px] border border-white/10 bg-[#180d2b]/45 px-5 text-white shadow-lg backdrop-blur-xl md:h-[90px] md:px-8"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[12px] border border-white/10 bg-[#0a2e5c]/45 px-5 text-white shadow-lg backdrop-blur-xl md:h-[90px] md:px-8"
         >
           {/* mobile: hamburger */}
           <button
@@ -946,7 +926,7 @@ export default function Home() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={asset("/assets/logo-kroketco.png")}
+              src={asset("/assets/logo-kroketco-blue.png")}
               alt="Kroketco Belgium"
               className="h-[46px] w-auto md:h-[58px]"
             />
@@ -961,20 +941,20 @@ export default function Home() {
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
-            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#0d3b6f] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Vind product
-              <ArrowCircle bg="#2c1250" />
+              <ArrowCircle bg="#0d3b6f" />
             </button>
-            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#0d3b6f] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Bestel nu
-              <ArrowCircle bg="#2c1250" />
+              <ArrowCircle bg="#0d3b6f" />
             </button>
           </div>
         </nav>
 
         {/* mobile dropdown menu */}
         {menuOpen && (
-          <div className="mt-2 overflow-hidden rounded-[5px] border border-white/10 bg-[#180d2b]/85 px-6 py-5 text-white backdrop-blur-xl lg:hidden">
+          <div className="mt-2 overflow-hidden rounded-[5px] border border-white/10 bg-[#0a2e5c]/85 px-6 py-5 text-white backdrop-blur-xl lg:hidden">
             <ul className="flex flex-col gap-4 text-[17px] font-semibold">
               {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
@@ -989,9 +969,9 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250]">
+              <button className="flex items-center justify-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#0d3b6f]">
                 Vind product
-                <ArrowCircle bg="#2c1250" />
+                <ArrowCircle bg="#0d3b6f" />
               </button>
               <button className="flex items-center justify-center gap-2.5 rounded-[5px] border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
                 Bestel nu
