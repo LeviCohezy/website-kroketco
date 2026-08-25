@@ -713,11 +713,11 @@ export default function Home() {
 
         {/* buttons — static (stay) */}
         <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
-          <button className="flex items-center gap-3 rounded-[6px] bg-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-white">
+          <button className="flex items-center gap-3 rounded-[6px] bg-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             View Product
             <ArrowCircle dark={false} />
           </button>
-          <button className="flex items-center gap-3 rounded-[6px] border-2 border-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-[#0E4B3A]">
+          <button className="flex items-center gap-3 rounded-[6px] border-2 border-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-[#0E4B3A] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0E4B3A] hover:text-white active:translate-y-0">
             Find Product
             <ArrowCircle />
           </button>
@@ -729,11 +729,13 @@ export default function Home() {
             <button
               key={i}
               onClick={() => setActive(i)}
-              aria-label={`Go to slide ${i + 1}`}
+              aria-label={`Ga naar slide ${i + 1}`}
+              aria-current={i === active ? "true" : undefined}
               className={
-                i === active
-                  ? "h-2.5 w-7 rounded-full bg-[#0E4B3A]"
-                  : "h-2.5 w-2.5 rounded-full bg-[#0E4B3A]/40"
+                "h-2.5 rounded-full transition-all duration-300 " +
+                (i === active
+                  ? "w-7 bg-[#0E4B3A]"
+                  : "w-2.5 bg-[#0E4B3A]/40 hover:bg-[#0E4B3A]/70")
               }
             />
           ))}
@@ -744,7 +746,7 @@ export default function Home() {
         <nav className="relative flex h-[90px] w-full items-center justify-between rounded-[28px] bg-[#0E4B3A] px-8 text-white">
           {/* left links */}
           <ul className="flex items-center gap-9 text-[17px] font-semibold">
-            <li className="flex cursor-pointer items-center gap-1.5">
+            <li className="flex cursor-pointer items-center gap-1.5 transition-opacity hover:opacity-70">
               Products
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path
@@ -757,11 +759,14 @@ export default function Home() {
               </svg>
             </li>
             {NAV_LINKS.map((l) => (
-              <li key={l} className="cursor-pointer">
+              <li
+                key={l}
+                className="cursor-pointer transition-opacity hover:opacity-70"
+              >
                 {l}
               </li>
             ))}
-            <li className="flex cursor-pointer items-center gap-2">
+            <li className="flex cursor-pointer items-center gap-2 transition-opacity hover:opacity-70">
               Search
               <span className="grid h-[22px] w-[22px] place-items-center rounded-full bg-white/15">
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -786,11 +791,11 @@ export default function Home() {
 
           {/* right buttons */}
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A]">
+            <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Find Product
               <ArrowCircle />
             </button>
-            <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A]">
+            <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Dine with Us
               <ArrowCircle />
             </button>
