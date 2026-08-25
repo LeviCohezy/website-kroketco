@@ -291,16 +291,18 @@ function ProductCard({
   );
 }
 
-function ArrowCircle({ dark = true }: { dark?: boolean }) {
+function ArrowCircle({ dark = true, bg }: { dark?: boolean; bg?: string }) {
+  const circleBg = bg ?? (dark ? "#0E4B3A" : "#ffffff");
+  const arrow = bg ? "#fff" : dark ? "#fff" : "#0E4B3A";
   return (
     <span
       className="grid h-6 w-6 place-items-center rounded-full"
-      style={{ background: dark ? "#0E4B3A" : "#ffffff" }}
+      style={{ background: circleBg }}
     >
       <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
         <path
           d="M2.5 6h6M6 3.2 8.9 6 6 8.8"
-          stroke={dark ? "#fff" : "#0E4B3A"}
+          stroke={arrow}
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -699,120 +701,55 @@ function RoundStamp({
 
 const NAV_LINKS = ["Recepten", "Over ons", "Nieuws"];
 
-type Badge = {
-  kind: "maple" | "made";
-  size: number;
-  side: "left" | "right";
-  v: "top" | "bottom";
-};
-
 type SlideCfg = {
-  bg: string;
-  bgShape: OrganicShape;
-  bgColor: string;
   titleLines: [string, string];
-  titleFont: string;
-  titleColor: string;
+  subtitle: string;
   img: string;
   imgAlt: string;
-  badges: Badge[];
 };
 
 const SLIDES: SlideCfg[] = [
   {
-    bg: "#92D9FB",
-    bgShape: "flower",
-    bgColor: "#7EC8EF",
-    titleLines: ["Emmental Kaas", "Kroketjes"],
-    titleFont: "var(--font-kuah)",
-    titleColor: "#F88804",
-    img: asset("/assets/hero-product.png"),
-    imgAlt: "Kroketco Emmental kaaskroketjes",
-    badges: [
-      { kind: "maple", size: 220, side: "left", v: "top" },
-      { kind: "made", size: 110, side: "right", v: "bottom" },
-    ],
-  },
-  {
-    bg: "#E24325",
-    bgShape: "blob",
-    bgColor: "#c8341c",
-    titleLines: ["Belgische", "Purée"],
-    titleFont: "var(--font-kuah)",
-    titleColor: "#ffffff",
-    img: asset("/assets/hero-product-2.png"),
-    imgAlt: "Kroketco Belgische verse purée",
-    badges: [{ kind: "maple", size: 220, side: "right", v: "top" }],
-  },
-  {
-    bg: "#B7CF2E",
-    bgShape: "star",
-    bgColor: "#A3BB22",
-    titleLines: ["Groendal", "Kroketjes"],
-    titleFont: "var(--font-kuah)",
-    titleColor: "#123f24",
-    img: asset("/assets/hero-product-3.png"),
-    imgAlt: "Kroketco Groendal kroketjes",
-    badges: [
-      { kind: "maple", size: 220, side: "left", v: "top" },
-      { kind: "made", size: 110, side: "right", v: "bottom" },
-    ],
-  },
-  {
-    bg: "#8FE6FF",
-    bgShape: "blob",
-    bgColor: "#6cc6f2",
-    titleLines: ["Garnaal", "Kroketten"],
-    titleFont: "var(--font-kuah)",
-    titleColor: "#0E4B3A",
-    img: asset("/assets/hero-product-4.png"),
-    imgAlt: "Kroketco Noordzee garnaalkroket",
-    badges: [
-      { kind: "maple", size: 220, side: "right", v: "top" },
-      { kind: "made", size: 110, side: "left", v: "bottom" },
-    ],
-  },
-  {
-    bg: "#48246c",
-    bgShape: "flower",
-    bgColor: "#5c3384",
     titleLines: ["Amandel", "Kroket"],
-    titleFont: "var(--font-kuah)",
-    titleColor: "#fff3e2",
+    subtitle: "Belgische amandelkroketten",
     img: asset("/assets/hero-product-5.png"),
     imgAlt: "Kroketco Amandel kroket",
-    badges: [
-      { kind: "maple", size: 220, side: "left", v: "top" },
-      { kind: "made", size: 110, side: "right", v: "bottom" },
-    ],
   },
   {
-    bg: "#0e4b3a",
-    bgShape: "star",
-    bgColor: "#0a3a2c",
+    titleLines: ["Emmental Kaas", "Kroketjes"],
+    subtitle: "Romige emmental kaaskroketjes",
+    img: asset("/assets/hero-product.png"),
+    imgAlt: "Kroketco Emmental kaaskroketjes",
+  },
+  {
+    titleLines: ["Belgische", "Purée"],
+    subtitle: "Verse Belgische aardappelpurée",
+    img: asset("/assets/hero-product-2.png"),
+    imgAlt: "Kroketco Belgische verse purée",
+  },
+  {
+    titleLines: ["Groendal", "Kroketjes"],
+    subtitle: "Groentekroketjes vol smaak",
+    img: asset("/assets/hero-product-3.png"),
+    imgAlt: "Kroketco Groendal kroketjes",
+  },
+  {
+    titleLines: ["Garnaal", "Kroketten"],
+    subtitle: "Noordzee garnaalkroketten",
+    img: asset("/assets/hero-product-4.png"),
+    imgAlt: "Kroketco Noordzee garnaalkroket",
+  },
+  {
     titleLines: ["Superano", "Kroket"],
-    titleFont: "var(--font-kuah)",
-    titleColor: "#c7e36a",
+    subtitle: "Pittige superano kroket",
     img: asset("/assets/hero-product-6.png"),
     imgAlt: "Kroketco Superano kroket",
-    badges: [
-      { kind: "maple", size: 220, side: "right", v: "top" },
-      { kind: "made", size: 110, side: "left", v: "bottom" },
-    ],
   },
   {
-    bg: "#6c7878",
-    bgShape: "blob",
-    bgColor: "#5b6666",
     titleLines: ["Kip", "Kroket"],
-    titleFont: "var(--font-kuah)",
-    titleColor: "#fff3e2",
+    subtitle: "Gebraden kipkroket",
     img: asset("/assets/hero-product-7.png"),
     imgAlt: "Kroketco Kip kroket",
-    badges: [
-      { kind: "maple", size: 220, side: "left", v: "top" },
-      { kind: "made", size: 110, side: "right", v: "bottom" },
-    ],
   },
 ];
 
@@ -822,19 +759,29 @@ const SLOT = 900;
 function HeroSlide({ cfg }: { cfg: SlideCfg }) {
   return (
     <div className="relative h-full w-full shrink-0">
-      <div className="relative z-10 flex h-full flex-col items-center pt-[150px]">
+      <div className="relative z-10 flex h-full flex-col items-center pt-[140px]">
         <h1
           className="text-center font-extrabold uppercase leading-[0.84]"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(46px, 7.6vw, 118px)",
-            color: "var(--maroon)",
+            color: "var(--cream)",
           }}
         >
           {cfg.titleLines[0]}
           <br />
           {cfg.titleLines[1]}
         </h1>
+        <div className="mt-4 flex items-center gap-4 px-4">
+          <span className="h-px w-8 bg-[#e7b64f]/50 md:w-12" />
+          <span
+            className="whitespace-nowrap text-center text-[15px] font-medium md:text-[19px]"
+            style={{ color: "#e7b64f" }}
+          >
+            {cfg.subtitle}
+          </span>
+          <span className="h-px w-8 bg-[#e7b64f]/50 md:w-12" />
+        </div>
       </div>
     </div>
   );
@@ -859,12 +806,12 @@ export default function Home() {
   return (
     <div className="relative bg-white">
       {/* ===== HERO SLIDER (a bit taller than the viewport) ===== */}
-      <section className="relative h-[106vh] w-full overflow-hidden bg-[var(--lavender)]">
+      <section className="relative h-[106vh] w-full overflow-hidden bg-[#3f1d63]">
         {/* single soft decorative flower behind the product */}
         <OrganicBg
           shape="flower"
-          color="#c1a7e6"
-          className="pointer-events-none absolute left-1/2 top-[300px] w-[820px] max-w-[94vw] -translate-x-1/2 opacity-55"
+          color="#5a3186"
+          className="pointer-events-none absolute left-1/2 top-[300px] w-[820px] max-w-[94vw] -translate-x-1/2 opacity-60"
         />
 
         {/* foreground — title + product slide horizontally */}
@@ -878,7 +825,7 @@ export default function Home() {
         </div>
 
         {/* product belt — smooth carousel; side products at 30% opacity */}
-        <div className="pointer-events-none absolute inset-x-0 top-[330px] z-[8] flex justify-center">
+        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[8] flex justify-center">
           <div
             className="flex transition-transform duration-700 ease-in-out"
             style={{
@@ -898,7 +845,7 @@ export default function Home() {
                   loading={i === 0 ? "eager" : "lazy"}
                   fetchPriority={i === 0 ? "high" : "auto"}
                   decoding="async"
-                  className="float h-max w-[min(88vw,700px)] drop-shadow-2xl"
+                  className="float h-max w-[min(74vw,540px)] drop-shadow-2xl"
                   style={{
                     opacity: i === active ? 1 : 0.3,
                     transition: "opacity 700ms ease-in-out",
@@ -910,7 +857,7 @@ export default function Home() {
         </div>
 
         {/* decorative sparkles scattered around the product */}
-        <div className="pointer-events-none absolute inset-x-0 top-[330px] z-[7] flex justify-center">
+        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[7] flex justify-center">
           <div className="relative h-[470px] w-[740px] max-w-[94vw]">
             <Sparkle size={34} className="left-[6%]! top-[4%]!" />
             <Sparkle size={54} className="left-[-2%]! top-[46%]!" />
@@ -923,13 +870,13 @@ export default function Home() {
 
         {/* buttons — static (stay) */}
         <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
-          <button className="flex items-center gap-3 rounded-full bg-[#141414] px-6 py-3.5 text-[15px] font-bold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[14px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Bekijk product
-            <ArrowCircle dark={false} />
+            <ArrowCircle bg="#2c1250" />
           </button>
-          <button className="flex items-center gap-3 rounded-full bg-[#141414] px-6 py-3.5 text-[15px] font-bold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-[14px] bg-[var(--cream)] px-6 py-3.5 text-[15px] font-bold text-[#2c1250] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Vind product
-            <ArrowCircle dark={false} />
+            <ArrowCircle bg="#2c1250" />
           </button>
         </div>
 
@@ -944,8 +891,8 @@ export default function Home() {
               className={
                 "h-2.5 rounded-full transition-all duration-300 " +
                 (i === active
-                  ? "w-7 bg-[#141414]"
-                  : "w-2.5 bg-[#141414]/35 hover:bg-[#141414]/60")
+                  ? "w-7 bg-[var(--cream)]"
+                  : "w-2.5 bg-[var(--cream)]/40 hover:bg-[var(--cream)]/70")
               }
             />
           ))}
@@ -955,7 +902,7 @@ export default function Home() {
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
         <nav
           aria-label="Hoofdnavigatie"
-          className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#141414] px-5 text-white md:h-[90px] md:rounded-[32px] md:px-8"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#180d2b] px-5 text-white md:h-[90px] md:rounded-[32px] md:px-8"
         >
           {/* mobile: hamburger */}
           <button
@@ -1024,30 +971,34 @@ export default function Home() {
           {/* center logo */}
           <a
             href="#"
-            aria-label="Kroketco startpagina"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[26px] italic tracking-tight text-[var(--cream)] transition-opacity hover:opacity-80 md:text-[32px]"
-            style={{ fontFamily: "var(--font-serif)", fontWeight: 800 }}
+            aria-label="Kroketco Belgium startpagina"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity hover:opacity-80"
           >
-            Kroketco
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset("/assets/logo-kroketco.png")}
+              alt="Kroketco Belgium"
+              className="h-[52px] w-auto md:h-[72px]"
+            />
           </a>
 
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
-            <button className="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 text-[16px] font-bold text-[#141414] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-full bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Vind product
-              <ArrowCircle />
+              <ArrowCircle bg="#2c1250" />
             </button>
-            <button className="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 text-[16px] font-bold text-[#141414] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
-              Onze recepten
-              <ArrowCircle />
+            <button className="flex items-center gap-2.5 rounded-full bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+              Bestel nu
+              <ArrowCircle bg="#2c1250" />
             </button>
           </div>
         </nav>
 
         {/* mobile dropdown menu */}
         {menuOpen && (
-          <div className="mt-2 overflow-hidden rounded-[22px] bg-[#141414] px-6 py-5 text-white lg:hidden">
+          <div className="mt-2 overflow-hidden rounded-[22px] bg-[#180d2b] px-6 py-5 text-white lg:hidden">
             <ul className="flex flex-col gap-4 text-[17px] font-semibold">
               {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
@@ -1062,12 +1013,12 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-2.5 rounded-full bg-white px-5 py-3 text-[16px] font-bold text-[#141414]">
+              <button className="flex items-center justify-center gap-2.5 rounded-full bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#2c1250]">
                 Vind product
-                <ArrowCircle />
+                <ArrowCircle bg="#2c1250" />
               </button>
-              <button className="flex items-center justify-center gap-2.5 rounded-full border-2 border-white px-5 py-3 text-[16px] font-bold text-white">
-                Onze recepten
+              <button className="flex items-center justify-center gap-2.5 rounded-full border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
+                Bestel nu
               </button>
             </div>
           </div>
