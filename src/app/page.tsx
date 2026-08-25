@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 
 // GitHub Pages serves this project from a subpath (e.g. "/website-kroketco").
 // next/font, next/image and next/link get the basePath automatically, but raw
@@ -822,13 +822,13 @@ const SLOT = 900;
 function HeroSlide({ cfg }: { cfg: SlideCfg }) {
   return (
     <div className="relative h-full w-full shrink-0">
-      <div className="relative z-10 flex h-full flex-col items-center pt-[190px]">
+      <div className="relative z-10 flex h-full flex-col items-center pt-[150px]">
         <h1
-          className="text-center leading-[0.92]"
+          className="text-center font-extrabold uppercase leading-[0.84]"
           style={{
-            fontFamily: cfg.titleFont,
-            fontSize: "clamp(52px, 6.6vw, 108px)",
-            color: cfg.titleColor,
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(46px, 7.6vw, 118px)",
+            color: "var(--maroon)",
           }}
         >
           {cfg.titleLines[0]}
@@ -859,29 +859,13 @@ export default function Home() {
   return (
     <div className="relative bg-white">
       {/* ===== HERO SLIDER (a bit taller than the viewport) ===== */}
-      <section className="relative h-[106vh] w-full overflow-hidden">
-        {/* background layers — color reveals via growing radial circle, pattern changes */}
-        {SLIDES.map((cfg, i) => (
-          <div
-            key={i}
-            className="absolute inset-0"
-            style={{
-              zIndex: i,
-              background: cfg.bg,
-              clipPath:
-                i <= active
-                  ? "circle(150% at 50% 88%)"
-                  : "circle(0% at 50% 88%)",
-              transition: "clip-path 900ms ease-in-out",
-            }}
-          >
-            <OrganicBg
-              shape={cfg.bgShape}
-              color={cfg.bgColor}
-              className="pointer-events-none absolute left-1/2 top-[150px] w-[860px] max-w-[80vw] -translate-x-1/2 opacity-40"
-            />
-          </div>
-        ))}
+      <section className="relative h-[106vh] w-full overflow-hidden bg-[var(--lavender)]">
+        {/* single soft decorative flower behind the product */}
+        <OrganicBg
+          shape="flower"
+          color="#c1a7e6"
+          className="pointer-events-none absolute left-1/2 top-[300px] w-[820px] max-w-[94vw] -translate-x-1/2 opacity-55"
+        />
 
         {/* foreground — title + product slide horizontally */}
         <div
@@ -925,56 +909,27 @@ export default function Home() {
           </div>
         </div>
 
-        {/* badges + sparkles — behind product, fade out/shrink + fade in/grow */}
-        {SLIDES.map((cfg, i) => (
-          <div
-            key={`bs-${i}`}
-            className="pointer-events-none absolute inset-0 z-[6]"
-            style={{
-              opacity: i === active ? 1 : 0,
-              transform: i === active ? "scale(1)" : "scale(0.7)",
-              transformOrigin: "50% 52%",
-              transition: "opacity 500ms ease-out, transform 500ms ease-out",
-            }}
-          >
-            <div className="absolute left-1/2 top-[330px] h-[470px] w-[640px] -translate-x-1/2">
-              {cfg.badges.map((b, bi) => {
-                const off = b.size >= 180 ? -46 : -22;
-                const style: CSSProperties = {
-                  position: "absolute",
-                  width: b.size,
-                  height: b.size,
-                  transform: `rotate(${b.side === "left" ? -6 : 6}deg)`,
-                  ...(b.side === "left" ? { left: off } : { right: off }),
-                  ...(b.v === "top"
-                    ? { top: b.side === "left" ? 90 : 14 }
-                    : { bottom: 20 }),
-                };
-                return (
-                  <div key={bi} style={style}>
-                    {b.kind === "maple" ? <MapleBadge /> : <MadeWithBadge />}
-                  </div>
-                );
-              })}
-              {/* sparkles */}
-              <Sparkle size={34} className="left-[8%]! top-[2%]!" />
-              <Sparkle size={52} className="left-[-3%]! top-[46%]!" />
-              <Sparkle size={34} className="left-[7%]! top-[82%]!" />
-              <Sparkle size={44} className="right-[10%]! top-[14%]!" />
-              <Sparkle size={34} className="right-[-1%]! top-[42%]!" />
-            </div>
+        {/* decorative sparkles scattered around the product */}
+        <div className="pointer-events-none absolute inset-x-0 top-[330px] z-[7] flex justify-center">
+          <div className="relative h-[470px] w-[740px] max-w-[94vw]">
+            <Sparkle size={34} className="left-[6%]! top-[4%]!" />
+            <Sparkle size={54} className="left-[-2%]! top-[46%]!" />
+            <Sparkle size={30} className="left-[11%]! top-[86%]!" />
+            <Sparkle size={46} className="right-[7%]! top-[10%]!" />
+            <Sparkle size={32} className="right-[-1%]! top-[44%]!" />
+            <Sparkle size={38} className="right-[12%]! top-[82%]!" />
           </div>
-        ))}
+        </div>
 
         {/* buttons — static (stay) */}
         <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
-          <button className="flex items-center gap-3 rounded-[6px] bg-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+          <button className="flex items-center gap-3 rounded-full bg-[#141414] px-6 py-3.5 text-[15px] font-bold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
             Bekijk product
             <ArrowCircle dark={false} />
           </button>
-          <button className="flex items-center gap-3 rounded-[6px] border-2 border-[#0E4B3A] px-5 py-3 text-[15px] font-bold text-[#0E4B3A] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0E4B3A] hover:text-white active:translate-y-0">
-            Vind een winkel
-            <ArrowCircle />
+          <button className="flex items-center gap-3 rounded-full bg-[#141414] px-6 py-3.5 text-[15px] font-bold text-white shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+            Vind product
+            <ArrowCircle dark={false} />
           </button>
         </div>
 
@@ -989,8 +944,8 @@ export default function Home() {
               className={
                 "h-2.5 rounded-full transition-all duration-300 " +
                 (i === active
-                  ? "w-7 bg-[#0E4B3A]"
-                  : "w-2.5 bg-[#0E4B3A]/40 hover:bg-[#0E4B3A]/70")
+                  ? "w-7 bg-[#141414]"
+                  : "w-2.5 bg-[#141414]/35 hover:bg-[#141414]/60")
               }
             />
           ))}
@@ -1000,7 +955,7 @@ export default function Home() {
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
         <nav
           aria-label="Hoofdnavigatie"
-          className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#0E4B3A] px-5 text-white md:h-[90px] md:rounded-[28px] md:px-8"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[22px] bg-[#141414] px-5 text-white md:h-[90px] md:rounded-[32px] md:px-8"
         >
           {/* mobile: hamburger */}
           <button
@@ -1070,7 +1025,8 @@ export default function Home() {
           <a
             href="#"
             aria-label="Kroketco startpagina"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[24px] font-black tracking-tight text-[var(--cream)] transition-opacity hover:opacity-80 md:text-[30px]"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[26px] italic tracking-tight text-[var(--cream)] transition-opacity hover:opacity-80 md:text-[32px]"
+            style={{ fontFamily: "var(--font-serif)", fontWeight: 800 }}
           >
             Kroketco
           </a>
@@ -1078,11 +1034,11 @@ export default function Home() {
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
-            <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
-              Vind een winkel
+            <button className="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 text-[16px] font-bold text-[#141414] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+              Vind product
               <ArrowCircle />
             </button>
-            <button className="flex items-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button className="flex items-center gap-2.5 rounded-full bg-white px-5 py-3 text-[16px] font-bold text-[#141414] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
               Onze recepten
               <ArrowCircle />
             </button>
@@ -1091,7 +1047,7 @@ export default function Home() {
 
         {/* mobile dropdown menu */}
         {menuOpen && (
-          <div className="mt-2 overflow-hidden rounded-[22px] bg-[#0E4B3A] px-6 py-5 text-white lg:hidden">
+          <div className="mt-2 overflow-hidden rounded-[22px] bg-[#141414] px-6 py-5 text-white lg:hidden">
             <ul className="flex flex-col gap-4 text-[17px] font-semibold">
               {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
@@ -1106,11 +1062,11 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-2.5 rounded-[6px] bg-white px-5 py-3 text-[16px] font-bold text-[#0E4B3A]">
-                Vind een winkel
+              <button className="flex items-center justify-center gap-2.5 rounded-full bg-white px-5 py-3 text-[16px] font-bold text-[#141414]">
+                Vind product
                 <ArrowCircle />
               </button>
-              <button className="flex items-center justify-center gap-2.5 rounded-[6px] border-2 border-white px-5 py-3 text-[16px] font-bold text-white">
+              <button className="flex items-center justify-center gap-2.5 rounded-full border-2 border-white px-5 py-3 text-[16px] font-bold text-white">
                 Onze recepten
               </button>
             </div>
