@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Archivo_Black, Playfair_Display } from "next/font/google";
+import { Poppins, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -8,15 +8,15 @@ const kuahAyam = localFont({
   variable: "--font-kuah",
 });
 
+// Cutepunch — rounded display face used for headings and product names.
+const cutepunch = localFont({
+  src: "./fonts/Cutepunch.ttf",
+  variable: "--font-display",
+});
+
 const poppins = Poppins({
   variable: "--font-sans",
   weight: ["400", "500", "600", "700", "800"],
-  subsets: ["latin"],
-});
-
-const archivo = Archivo_Black({
-  variable: "--font-display",
-  weight: "400",
   subsets: ["latin"],
 });
 
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="nl"
       suppressHydrationWarning
-      className={`${poppins.variable} ${archivo.variable} ${playfair.variable} ${kuahAyam.variable}`}
+      className={`${poppins.variable} ${cutepunch.variable} ${playfair.variable} ${kuahAyam.variable}`}
     >
       <body>{children}</body>
     </html>
