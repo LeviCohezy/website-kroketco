@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 // GitHub Pages serves this project from a subpath (e.g. "/website-kroketco").
 // next/font, next/image and next/link get the basePath automatically, but raw
@@ -721,53 +721,210 @@ function RoundStamp({
 
 const NAV_LINKS = ["Recepten", "Over ons", "Nieuws"];
 
-type SlideCfg = {
-  titleLines: [string, string];
+type Slide = {
+  href: string;
+  title: [string, string];
   subtitle: string;
-  img: string;
-  imgAlt: string;
+  bg: string;
+  product: string;
+  productAlt: string;
+  flower: string;
+  flowerClass: string;
+  logo: string;
+  logoAlt: string;
+  badge: string;
+  badgeClass: string;
+  extra: { src: string; className: string }[];
+  headline: string;
+  subColor: string;
+  subLine: string;
+  sparkle: string;
+  navGlass: string;
+  accent: string;
+  solid: { bg: string; text: string; arcBg: string; arcFg: string };
+  outline: { color: string; arcBg: string; arcFg: string };
 };
 
-// The hero shows a single product.
-const HERO: SlideCfg = {
-  titleLines: ["Garnaal", "Kroket"],
-  subtitle: "Belgische garnaalkroketten",
-  img: asset("/assets/garnaal-product.png"),
-  imgAlt: "Kroketco Garnaal kroket",
-};
+const HERO_SLIDES: Slide[] = [
+  {
+    href: asset("/assortiment/garnaal-kroket/"),
+    title: ["Garnaal", "Kroket"],
+    subtitle: "Belgische garnaalkroketten",
+    bg: "#AAD7FC",
+    product: asset("/assets/garnaal-product.png"),
+    productAlt: "Kroketco Garnaal kroket",
+    flower: asset("/assets/garnaal-flower.png"),
+    flowerClass:
+      "pointer-events-none absolute left-1/2 top-[300px] w-[760px] max-w-[92vw] -translate-x-1/2 opacity-45",
+    logo: asset("/assets/logo-garnaal.png"),
+    logoAlt: "Kroketco Belgium — Garnaal Kroket",
+    badge: asset("/assets/garnaal-badge.png"),
+    badgeClass:
+      "pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
+    extra: [],
+    headline: "#0d3b6f",
+    subColor: "#1257a0",
+    subLine: "#1f6fc4",
+    sparkle: "#ffffff",
+    navGlass: "rgba(10,46,92,0.45)",
+    accent: "#0d3b6f",
+    solid: { bg: "#0d3b6f", text: "#fff3e2", arcBg: "#fff3e2", arcFg: "#0d3b6f" },
+    outline: { color: "#0d3b6f", arcBg: "#0d3b6f", arcFg: "#ffffff" },
+  },
+  {
+    href: asset("/assortiment/amandel-kroket/"),
+    title: ["Amandel", "Kroket"],
+    subtitle: "Belgische amandelkroketten",
+    bg: "#3f1d63",
+    product: asset("/assets/amandel-product.png"),
+    productAlt: "Kroketco Amandel kroket",
+    flower: asset("/assets/amandel-flower.png"),
+    flowerClass:
+      "pointer-events-none absolute left-1/2 top-[300px] w-[760px] max-w-[92vw] -translate-x-1/2 opacity-45",
+    logo: asset("/assets/logo-amandel.png"),
+    logoAlt: "Kroketco Belgium — Amandel Kroket",
+    badge: asset("/assets/amandel-badge.png"),
+    badgeClass:
+      "pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block",
+    extra: [],
+    headline: "#fff3e2",
+    subColor: "#e7b64f",
+    subLine: "#e7b64f",
+    sparkle: "#ffffff",
+    navGlass: "rgba(24,13,43,0.45)",
+    accent: "#2c1250",
+    solid: { bg: "#fff3e2", text: "#2c1250", arcBg: "#2c1250", arcFg: "#ffffff" },
+    outline: { color: "#fff3e2", arcBg: "#fff3e2", arcFg: "#2c1250" },
+  },
+  {
+    href: asset("/assortiment/groendal-kroket/"),
+    title: ["Groendal", "Kroket"],
+    subtitle: "Belgische groene kaaskroketten",
+    bg: "#eaf1cc",
+    product: asset("/assets/groendal-product.png"),
+    productAlt: "Kroketco Groendal kroket",
+    flower: asset("/assets/groendal-flower.png"),
+    flowerClass:
+      "pointer-events-none absolute left-1/2 top-[210px] w-[880px] max-w-[96vw] -translate-x-1/2 opacity-90",
+    logo: asset("/assets/logo-groendal.png"),
+    logoAlt: "Kroketco Belgium — Groendal Kroket",
+    badge: asset("/assets/groendal-badge.png"),
+    badgeClass:
+      "pointer-events-none absolute left-[calc(50%-430px)] top-[430px] z-[10] hidden w-[260px] -rotate-6 drop-shadow-xl md:block",
+    extra: [
+      {
+        src: asset("/assets/groendal-cheese.png"),
+        className:
+          "pointer-events-none absolute right-[calc(50%-540px)] top-[530px] z-[10] hidden w-[380px] drop-shadow-xl md:block",
+      },
+    ],
+    headline: "#2f5237",
+    subColor: "#5f7d33",
+    subLine: "#7a9b45",
+    sparkle: "#ffffff",
+    navGlass: "rgba(20,48,31,0.5)",
+    accent: "#1c3a22",
+    solid: { bg: "#1c3a22", text: "#fff3e2", arcBg: "#fff3e2", arcFg: "#1c3a22" },
+    outline: { color: "#1c3a22", arcBg: "#1c3a22", arcFg: "#ffffff" },
+  },
+];
 
-function HeroSlide({ cfg }: { cfg: SlideCfg }) {
+function HeroContent({ s }: { s: Slide }) {
   return (
-    <div className="relative h-full w-full shrink-0">
-      <div className="relative z-10 flex h-full flex-col items-center pt-[140px]">
-        <h1
-          className="text-center font-extrabold uppercase leading-[0.84]"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(46px, 7.6vw, 118px)",
-            color: "#0d3b6f",
-          }}
-        >
-          {cfg.titleLines[0]}
-          <br />
-          {cfg.titleLines[1]}
-        </h1>
-        <div className="mt-4 flex items-center gap-4 px-4">
-          <span className="h-px w-8 bg-[#1f6fc4]/60 md:w-12" />
-          <span
-            className="whitespace-nowrap text-center text-[15px] font-semibold md:text-[19px]"
-            style={{ color: "#1257a0" }}
-          >
-            {cfg.subtitle}
-          </span>
-          <span className="h-px w-8 bg-[#e7b64f]/50 md:w-12" />
+    <div className="absolute inset-0" style={{ background: s.bg }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={s.flower} alt="" aria-hidden="true" className={s.flowerClass} />
+      {s.extra.map((e, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img key={i} src={e.src} alt="" aria-hidden="true" className={e.className} />
+      ))}
+
+      {/* side peeks */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={s.product}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[-190px] top-[418px] z-[6] hidden w-[400px] md:block"
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={s.product}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[-190px] top-[418px] z-[6] hidden w-[400px] md:block"
+      />
+
+      {/* badge */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={s.badge} alt="" aria-hidden="true" className={s.badgeClass} />
+
+      {/* sparkles */}
+      <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[9] flex justify-center">
+        <div className="relative h-[470px] w-[740px] max-w-[94vw]">
+          <Sparkle color={s.sparkle} size={34} className="left-[6%]! top-[4%]!" />
+          <Sparkle color={s.sparkle} size={54} className="left-[-2%]! top-[46%]!" />
+          <Sparkle color={s.sparkle} size={30} className="left-[11%]! top-[86%]!" />
+          <Sparkle color={s.sparkle} size={46} className="right-[7%]! top-[10%]!" />
+          <Sparkle color={s.sparkle} size={32} className="right-[-1%]! top-[44%]!" />
+          <Sparkle color={s.sparkle} size={38} className="right-[12%]! top-[82%]!" />
         </div>
       </div>
+
+      {/* title */}
+      <div className="absolute inset-0 z-[10]">
+        <div className="hero-rise flex h-full flex-col items-center pt-[140px]">
+          <h1
+            className="text-center font-extrabold uppercase leading-[0.84]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(46px, 7.6vw, 118px)",
+              color: s.headline,
+            }}
+          >
+            {s.title[0]}
+            <br />
+            {s.title[1]}
+          </h1>
+          <div className="mt-4 flex items-center gap-4 px-4">
+            <span
+              className="h-px w-8 md:w-12"
+              style={{ background: s.subLine, opacity: 0.6 }}
+            />
+            <span
+              className="whitespace-nowrap text-center text-[15px] font-semibold md:text-[19px]"
+              style={{ color: s.subColor }}
+            >
+              {s.subtitle}
+            </span>
+            <span
+              className="h-px w-8 md:w-12"
+              style={{ background: s.subLine, opacity: 0.6 }}
+            />
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
 
 export default function Home() {
+  const [hero, dispatchHero] = useReducer(
+    (
+      st: { idx: number; prev: number; tick: number },
+      a: "next" | number,
+    ) =>
+      a === "next"
+        ? { idx: (st.idx + 1) % HERO_SLIDES.length, prev: st.idx, tick: st.tick + 1 }
+        : { idx: a, prev: st.idx, tick: st.tick + 1 },
+    { idx: 0, prev: 0, tick: 0 },
+  );
+  useEffect(() => {
+    const id = setInterval(() => dispatchHero("next"), 5200);
+    return () => clearInterval(id);
+  }, []);
+  const activeSlide = HERO_SLIDES[hero.idx];
   const [pActive, setPActive] = useState(2);
   const [hoverP, setHoverP] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -778,95 +935,96 @@ export default function Home() {
   return (
     <div className="relative bg-white">
       {/* ===== HERO SLIDER (a bit taller than the viewport) ===== */}
-      <section className="relative h-[106vh] w-full overflow-hidden bg-[#AAD7FC]">
-        {/* single soft decorative flower behind the product */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset("/assets/garnaal-flower.png")}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-          className="pointer-events-none absolute left-1/2 top-[300px] w-[760px] max-w-[92vw] -translate-x-1/2 opacity-45"
-        />
-
-        {/* title (amandel only) */}
-        <div className="absolute inset-0 z-10">
-          <HeroSlide cfg={HERO} />
+      <section className="relative h-[106vh] w-full overflow-hidden">
+        {/* base layer = previous slide (settled) */}
+        <div className="absolute inset-0 z-0">
+          <HeroContent s={HERO_SLIDES[hero.prev]} />
+        </div>
+        {/* reveal layer = current slide, unveiled by a growing circle */}
+        <div key={hero.tick} className="hero-reveal absolute inset-0 z-[1]">
+          <HeroContent s={activeSlide} />
         </div>
 
-        {/* full-colour side peeks of the same product */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={HERO.img}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-          className="pointer-events-none absolute left-[-190px] top-[418px] z-[6] hidden w-[400px] md:block"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={HERO.img}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-          className="pointer-events-none absolute right-[-190px] top-[418px] z-[6] hidden w-[400px] md:block"
-        />
-
-        {/* center product */}
-        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[8] flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={HERO.img}
-            alt={HERO.imgAlt}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            className="float h-max w-[min(64vw,462px)] drop-shadow-2xl"
-          />
-        </div>
-
-        {/* premium-quality badge, to the left of the product */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset("/assets/garnaal-badge.png")}
-          alt="Premium kwaliteit — gemaakt in België"
-          loading="lazy"
-          decoding="async"
-          className="pointer-events-none absolute left-[calc(50%-370px)] top-[486px] z-[10] hidden w-[190px] -rotate-6 drop-shadow-xl md:block"
-        />
-
-        {/* decorative sparkles scattered around the product */}
-        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[9] flex justify-center">
-          <div className="relative h-[470px] w-[740px] max-w-[94vw]">
-            <Sparkle size={34} className="left-[6%]! top-[4%]!" />
-            <Sparkle size={54} className="left-[-2%]! top-[46%]!" />
-            <Sparkle size={30} className="left-[11%]! top-[86%]!" />
-            <Sparkle size={46} className="right-[7%]! top-[10%]!" />
-            <Sparkle size={32} className="right-[-1%]! top-[44%]!" />
-            <Sparkle size={38} className="right-[12%]! top-[82%]!" />
+        {/* package belt overlay — slides sideways on switch */}
+        <div className="pointer-events-none absolute inset-x-0 top-[384px] z-[2] flex justify-center">
+          <div className="relative flex w-[min(64vw,462px)] justify-center">
+            {hero.prev !== hero.idx && (
+              <div
+                key={`out-${hero.tick}`}
+                className="hero-slide-out absolute inset-0 flex justify-center"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={HERO_SLIDES[hero.prev].product}
+                  alt=""
+                  aria-hidden="true"
+                  className="float h-max w-full drop-shadow-2xl"
+                />
+              </div>
+            )}
+            <div
+              key={`in-${hero.tick}`}
+              className="hero-slide-in flex w-full justify-center"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={activeSlide.product}
+                alt={activeSlide.productAlt}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                className="float h-max w-full drop-shadow-2xl"
+              />
+            </div>
           </div>
         </div>
 
-        {/* buttons — static (stay) */}
-        <div className="absolute inset-x-0 bottom-[15vh] z-20 flex justify-center gap-4">
-          <button className="flex items-center gap-3 rounded-[5px] bg-[#0d3b6f] px-6 py-3.5 text-[15px] font-bold text-[var(--cream)] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0">
+        {/* buttons overlay — stay put, fade per slide */}
+        <div className="absolute inset-x-0 bottom-[15vh] z-[3] flex justify-center gap-4">
+          <a
+            key={`b1-${hero.idx}`}
+            href={activeSlide.href}
+            className="hero-fade flex items-center gap-3 rounded-[5px] px-6 py-3.5 text-[15px] font-bold shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+            style={{ background: activeSlide.solid.bg, color: activeSlide.solid.text }}
+          >
             Bekijk product
-            <ArrowCircle bg="var(--cream)" fg="#0d3b6f" />
-          </button>
-          <button className="flex items-center gap-3 rounded-[5px] border-2 border-[#0d3b6f] px-6 py-3 text-[15px] font-bold text-[#0d3b6f] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0d3b6f] hover:text-[var(--cream)] active:translate-y-0">
+            <ArrowCircle bg={activeSlide.solid.arcBg} fg={activeSlide.solid.arcFg} />
+          </a>
+          <a
+            key={`b2-${hero.idx}`}
+            href={activeSlide.href}
+            className="hero-fade flex items-center gap-3 rounded-[5px] border-2 px-6 py-3 text-[15px] font-bold transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            style={{ borderColor: activeSlide.outline.color, color: activeSlide.outline.color }}
+          >
             Vind product
-            <ArrowCircle bg="#0d3b6f" />
-          </button>
+            <ArrowCircle bg={activeSlide.outline.arcBg} fg={activeSlide.outline.arcFg} />
+          </a>
+        </div>
+
+        {/* slide dots */}
+        <div className="absolute inset-x-0 bottom-[7vh] z-30 flex justify-center gap-2.5">
+          {HERO_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => dispatchHero(i)}
+              aria-label={`Ga naar slide ${i + 1}`}
+              aria-current={i === hero.idx ? "true" : undefined}
+              className="h-2.5 rounded-full transition-all duration-300"
+              style={{
+                width: i === hero.idx ? 28 : 10,
+                background: activeSlide.headline,
+                opacity: i === hero.idx ? 1 : 0.4,
+              }}
+            />
+          ))}
         </div>
 
         {/* ===== NAV (shared overlay) ===== */}
         <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
         <nav
           aria-label="Hoofdnavigatie"
-          className="relative flex h-[70px] w-full items-center justify-between rounded-[12px] border border-white/10 bg-[#0a2e5c]/45 px-5 text-white shadow-lg backdrop-blur-xl md:h-[90px] md:px-8"
+          className="relative flex h-[70px] w-full items-center justify-between rounded-[12px] border border-white/10 px-5 text-white shadow-lg backdrop-blur-xl md:h-[90px] md:px-8"
+          style={{ background: activeSlide.navGlass, transition: "background-color 900ms ease" }}
         >
           {/* mobile: hamburger */}
           <button
@@ -940,9 +1098,10 @@ export default function Home() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={asset("/assets/logo-garnaal.png")}
-              alt="Kroketco Belgium — Garnaal Kroket"
-              className="h-[48px] w-auto md:h-[62px]"
+              key={hero.idx}
+              src={activeSlide.logo}
+              alt={activeSlide.logoAlt}
+              className="hero-fade h-[48px] w-auto md:h-[62px]"
             />
             <span
               className="text-[24px] text-[var(--cream)] md:text-[30px]"
@@ -955,20 +1114,29 @@ export default function Home() {
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
-            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#0d3b6f] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button
+              className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+              style={{ color: activeSlide.accent }}
+            >
               Vind product
-              <ArrowCircle bg="#0d3b6f" />
+              <ArrowCircle bg={activeSlide.accent} />
             </button>
-            <button className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#0d3b6f] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0">
+            <button
+              className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+              style={{ color: activeSlide.accent }}
+            >
               Bestel nu
-              <ArrowCircle bg="#0d3b6f" />
+              <ArrowCircle bg={activeSlide.accent} />
             </button>
           </div>
         </nav>
 
         {/* mobile dropdown menu */}
         {menuOpen && (
-          <div className="mt-2 overflow-hidden rounded-[5px] border border-white/10 bg-[#0a2e5c]/85 px-6 py-5 text-white backdrop-blur-xl lg:hidden">
+          <div
+            className="mt-2 overflow-hidden rounded-[5px] border border-white/10 px-6 py-5 text-white backdrop-blur-xl lg:hidden"
+            style={{ background: activeSlide.navGlass }}
+          >
             <ul className="flex flex-col gap-4 text-[17px] font-semibold">
               {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
@@ -983,9 +1151,12 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[#0d3b6f]">
+              <button
+                className="flex items-center justify-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold"
+                style={{ color: activeSlide.accent }}
+              >
                 Vind product
-                <ArrowCircle bg="#0d3b6f" />
+                <ArrowCircle bg={activeSlide.accent} />
               </button>
               <button className="flex items-center justify-center gap-2.5 rounded-[5px] border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
                 Bestel nu
