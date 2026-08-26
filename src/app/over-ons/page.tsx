@@ -135,7 +135,7 @@ export default function OverOns() {
       <SiteNav active="Over ons" />
 
       {/* ===== 1. HERO ===== */}
-      <section className="bg-[var(--kc-blue)] px-4 pb-16 pt-14 md:pb-24 md:pt-20">
+      <section className="-mt-[84px] bg-[var(--kc-blue)] px-4 pb-16 pt-[110px] md:-mt-[100px] md:pb-24 md:pt-[132px]">
         <div className="mx-auto max-w-[1100px] text-center">
           <Eyebrow>Over ons</Eyebrow>
           <h1

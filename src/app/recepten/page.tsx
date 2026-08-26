@@ -235,7 +235,7 @@ export default function ReceptenPage() {
       <SiteNav active="Recepten" />
 
       {/* ===== HERO ===== */}
-      <section className="relative bg-[var(--kc-blue)] px-4 pb-24 pt-16 md:pb-28">
+      <section className="relative -mt-[84px] bg-[var(--kc-blue)] px-4 pb-24 pt-[110px] md:-mt-[100px] md:pb-28 md:pt-[132px]">
         <Sparkle size={30} className="left-[8%]! top-[24%]!" />
         <Sparkle size={44} className="left-[16%]! bottom-[26%]!" />
         <Sparkle size={26} className="right-[12%]! top-[30%]!" />

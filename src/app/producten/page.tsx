@@ -64,7 +64,7 @@ export default function Producten() {
       <SiteNav active="Producten" />
 
       {/* yellow hero */}
-      <section className="relative bg-[var(--kc-golden)] px-4 pb-24 pt-16 text-center md:pt-20">
+      <section className="relative -mt-[84px] bg-[var(--kc-golden)] px-4 pb-24 pt-[110px] text-center md:-mt-[100px] md:pt-[132px]">
         <p className="text-[15px] font-extrabold uppercase tracking-[0.15em] text-black">Honger?</p>
         <h1
           className="mx-auto mt-4 max-w-[1100px] font-extrabold uppercase leading-[0.88] text-black"
