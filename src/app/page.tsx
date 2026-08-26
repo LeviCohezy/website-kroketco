@@ -720,6 +720,12 @@ function RoundStamp({
 }
 
 const NAV_LINKS = ["Recepten", "Over ons", "Nieuws"];
+const NAV_HREF: Record<string, string> = {
+  Producten: "/producten/",
+  Recepten: "/recepten/",
+  "Over ons": "/over-ons/",
+  Nieuws: "/nieuws/",
+};
 
 type Slide = {
   href: string;
@@ -1205,24 +1211,31 @@ export default function Home() {
 
           {/* left links (desktop) */}
           <ul className="hidden items-center gap-9 text-[17px] font-semibold lg:flex">
-            <li className="flex cursor-pointer items-center gap-1.5 transition-opacity hover:opacity-70">
-              Producten
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M3 4.5 6 7.5 9 4.5"
-                  stroke="#fff"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <li>
+              <a
+                href={asset("/producten/")}
+                className="flex items-center gap-1.5 transition-opacity hover:opacity-70"
+              >
+                Producten
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path
+                    d="M3 4.5 6 7.5 9 4.5"
+                    stroke="#fff"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
             </li>
             {NAV_LINKS.map((l) => (
-              <li
-                key={l}
-                className="cursor-pointer transition-opacity hover:opacity-70"
-              >
-                {l}
+              <li key={l}>
+                <a
+                  href={asset(NAV_HREF[l])}
+                  className="transition-opacity hover:opacity-70"
+                >
+                  {l}
+                </a>
               </li>
             ))}
             <li className="flex cursor-pointer items-center gap-2 transition-opacity hover:opacity-70">
@@ -1243,7 +1256,7 @@ export default function Home() {
 
           {/* center logo */}
           <a
-            href="#"
+            href={asset("/")}
             aria-label="Kroketco Belgium startpagina"
             className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 transition-opacity hover:opacity-80"
           >
@@ -1265,20 +1278,22 @@ export default function Home() {
           {/* right buttons (desktop) — placeholder keeps logo centred on mobile */}
           <span className="h-10 w-10 lg:hidden" aria-hidden="true" />
           <div className="hidden items-center gap-3 lg:flex">
-            <button
+            <a
+              href={asset("/producten/")}
               className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
               style={{ color: activeSlide.accent }}
             >
               Vind product
               <ArrowCircle bg={activeSlide.accent} />
-            </button>
-            <button
+            </a>
+            <a
+              href={asset("/producten/")}
               className="flex items-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
               style={{ color: activeSlide.accent }}
             >
               Bestel nu
               <ArrowCircle bg={activeSlide.accent} />
-            </button>
+            </a>
           </div>
         </nav>
 
@@ -1292,7 +1307,7 @@ export default function Home() {
               {["Producten", ...NAV_LINKS].map((l) => (
                 <li key={l}>
                   <a
-                    href="#"
+                    href={asset(NAV_HREF[l])}
                     onClick={() => setMenuOpen(false)}
                     className="block rounded py-1 transition-opacity hover:opacity-70"
                   >
@@ -1302,16 +1317,20 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <button
+              <a
+                href={asset("/producten/")}
                 className="flex items-center justify-center gap-2.5 rounded-[5px] bg-[var(--cream)] px-5 py-3 text-[16px] font-bold"
                 style={{ color: activeSlide.accent }}
               >
                 Vind product
                 <ArrowCircle bg={activeSlide.accent} />
-              </button>
-              <button className="flex items-center justify-center gap-2.5 rounded-[5px] border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]">
+              </a>
+              <a
+                href={asset("/producten/")}
+                className="flex items-center justify-center gap-2.5 rounded-[5px] border-2 border-[var(--cream)] px-5 py-3 text-[16px] font-bold text-[var(--cream)]"
+              >
                 Bestel nu
-              </button>
+              </a>
             </div>
           </div>
         )}

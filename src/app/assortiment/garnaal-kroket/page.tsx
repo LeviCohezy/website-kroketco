@@ -8,6 +8,12 @@ const BP = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const asset = (p: string) => `${BP}${p}`;
 
 const NAV_LINKS = ["Recepten", "Over ons", "Nieuws"];
+const NAV_HREF: Record<string, string> = {
+  Producten: "/producten/",
+  Recepten: "/recepten/",
+  "Over ons": "/over-ons/",
+  Nieuws: "/nieuws/",
+};
 
 function ArrowCircle({ bg, fg }: { bg?: string; fg?: string }) {
   const circleBg = bg ?? "#0E4B3A";
@@ -192,15 +198,19 @@ export default function GarnaalKroket() {
             </button>
 
             <ul className="hidden items-center gap-9 text-[17px] font-semibold lg:flex">
-              <li className="flex cursor-pointer items-center gap-1.5 transition-opacity hover:opacity-70">
-                Producten
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M3 4.5 6 7.5 9 4.5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+              <li>
+                <a href={asset("/producten/")} className="flex items-center gap-1.5 transition-opacity hover:opacity-70">
+                  Producten
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M3 4.5 6 7.5 9 4.5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
               </li>
               {NAV_LINKS.map((l) => (
-                <li key={l} className="cursor-pointer transition-opacity hover:opacity-70">
-                  {l}
+                <li key={l}>
+                  <a href={asset(NAV_HREF[l])} className="transition-opacity hover:opacity-70">
+                    {l}
+                  </a>
                 </li>
               ))}
               <li className="flex cursor-pointer items-center gap-2 transition-opacity hover:opacity-70">
@@ -251,7 +261,7 @@ export default function GarnaalKroket() {
               <ul className="flex flex-col gap-4 text-[17px] font-semibold">
                 {["Producten", ...NAV_LINKS].map((l) => (
                   <li key={l}>
-                    <a href="#" onClick={() => setMenuOpen(false)} className="block rounded py-1 transition-opacity hover:opacity-70">
+                    <a href={asset(NAV_HREF[l])} onClick={() => setMenuOpen(false)} className="block rounded py-1 transition-opacity hover:opacity-70">
                       {l}
                     </a>
                   </li>
