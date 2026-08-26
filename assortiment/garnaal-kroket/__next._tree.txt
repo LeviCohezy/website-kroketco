@@ -7,4 +7,4 @@
 :HL["/website-kroketco/_next/static/media/KuahAyam-s.p.3l4_3u9wms-p3.otf","font",{"crossOrigin":"","type":"font/otf"}]
 :HL["/website-kroketco/_next/static/media/a218039a3287bcfd-s.p.43zbiuwnnoiok.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/website-kroketco/_next/static/media/e2334d715941921e-s.p.3o_v2fun1jzxk.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"assortiment","param":null,"prefetchHints":4192,"slots":{"children":{"name":"garnaal-kroket","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"r6vAzXt8HNu2xlpKszEX5"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"assortiment","param":null,"prefetchHints":4192,"slots":{"children":{"name":"garnaal-kroket","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"DJyly3f-B5hcOYrV8GRwa"}
