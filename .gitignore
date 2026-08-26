@@ -49,3 +49,6 @@ next-env.d.ts
 /public/assets/Brandboard*.png
 /public/assets/ChatGPT Image*.png
 /public/assets/16ea7276-*.png
+
+# CI workflow not used (manual gh-pages deploy)
+/.github/
