@@ -135,7 +135,7 @@ export default function OverOns() {
       <SiteNav active="Over ons" />
 
       {/* ===== 1. HERO ===== */}
-      <section className="-mt-[84px] bg-[var(--kc-blue)] px-4 pb-16 pt-[110px] md:-mt-[100px] md:pb-24 md:pt-[132px]">
+      <section className="-mt-[84px] bg-[#8fe6ff] px-4 pb-16 pt-[110px] md:-mt-[100px] md:pb-24 md:pt-[132px]">
         <div className="mx-auto max-w-[1100px] text-center">
           <Eyebrow>Over ons</Eyebrow>
           <h1
@@ -152,38 +152,41 @@ export default function OverOns() {
           </p>
 
           {/* video / image block */}
-          <div className="relative mx-auto mt-12 h-[300px] max-w-[900px] overflow-hidden rounded-[24px] shadow-2xl md:h-[420px]">
-            <img
-              src={asset("/assets/UGC/ugc1.png")}
-              alt="Kroketco ambachtelijke keuken"
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/15" />
+          <div className="relative mx-auto mt-12 max-w-[900px]">
+            <div className="relative h-[300px] overflow-hidden rounded-[24px] shadow-2xl md:h-[420px]">
+              <img
+                src={asset("/assets/UGC/ugc1.png")}
+                alt="Kroketco ambachtelijke keuken"
+                className="h-full w-full object-cover object-[50%_15%]"
+              />
+              <div className="absolute inset-0 bg-black/15" />
 
-            {/* play button */}
-            <button
-              aria-label="Bekijk video"
-              className="absolute left-1/2 top-1/2 grid h-[76px] w-[76px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/95 shadow-xl transition-transform duration-200 hover:scale-105 md:h-[92px] md:w-[92px]"
-            >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="var(--kc-green)">
-                <path d="M8 5.5v13l11-6.5-11-6.5Z" />
-              </svg>
-            </button>
-
-            <Sparkle size={30} className="left-[6%]! top-[12%]!" />
-            <Sparkle size={22} className="right-[9%]! bottom-[14%]!" />
-
-            {/* ambachtelijk badge */}
-            <div className="absolute bottom-4 right-4 grid h-[92px] w-[92px] place-items-center rounded-full bg-[var(--kc-golden)] text-center shadow-lg md:h-[108px] md:w-[108px]">
-              <span
-                className="text-[13px] font-extrabold uppercase leading-tight text-[#3a2a12] md:text-[15px]"
-                style={DISPLAY}
+              {/* play button */}
+              <button
+                aria-label="Bekijk video"
+                className="absolute left-1/2 top-1/2 grid h-[76px] w-[76px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/95 shadow-xl transition-transform duration-200 hover:scale-105 md:h-[92px] md:w-[92px]"
               >
-                100%
-                <br />
-                ambachtelijk
-              </span>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="var(--kc-green)">
+                  <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                </svg>
+              </button>
+
+              <Sparkle size={30} className="left-[6%]! top-[12%]!" />
+              <Sparkle size={22} className="right-[9%]! bottom-[14%]!" />
             </div>
+
+            {/* Kroketco logo labels flanking the video */}
+            <img
+              src={asset("/assets/logo-badge-green.png")}
+              alt="Kroketco Belgium"
+              className="pointer-events-none absolute -left-5 -top-8 z-10 w-[104px] -rotate-6 drop-shadow-xl md:-left-14 md:-top-10 md:w-[148px]"
+            />
+            <img
+              src={asset("/assets/logo-badge-orange.png")}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-6 -right-5 z-10 w-[104px] rotate-6 drop-shadow-xl md:-bottom-10 md:-right-14 md:w-[148px]"
+            />
           </div>
         </div>
       </section>
