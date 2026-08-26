@@ -173,9 +173,9 @@ export default function NieuwsPage() {
     <div className="bg-[var(--cream)]">
       <SiteNav active="Nieuws" />
 
-      {/* ===== HERO — featured news ===== */}
-      <section className="relative bg-[var(--kc-blue)]">
-        <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-4 py-16 md:grid-cols-2 md:px-8 md:py-20">
+      {/* ===== HERO — featured news (blue runs up behind the nav) ===== */}
+      <section className="relative -mt-[84px] bg-[var(--kc-blue)] md:-mt-[100px]">
+        <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-4 pb-16 pt-[110px] md:grid-cols-2 md:px-8 md:pb-20 md:pt-[128px]">
           {/* left: copy */}
           <div>
             <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--kc-green)]">
