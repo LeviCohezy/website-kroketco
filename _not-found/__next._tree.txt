@@ -1,2 +1,2 @@
-:HL["/website-kroketco/_next/static/chunks/0s6qr_qube2hp.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"pNhPsxYl2sQT-NR7k0YjJ"}
+:HL["/website-kroketco/_next/static/chunks/1io2ayohia9sh.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"02SpX7UgrXag2iMGwJfPm"}
